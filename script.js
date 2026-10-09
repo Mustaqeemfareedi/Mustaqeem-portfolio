@@ -60,3 +60,47 @@ if (heroArt) {
     heroArt.style.transform = '';
   });
 }
+// ===== MUSTAQEEM'S 3D PORTFOLIO UPGRADE =====
+
+// Interactive 3D project cards
+document.querySelectorAll('.project-card').forEach(card => {
+  card.addEventListener('mousemove', event => {
+    if (window.innerWidth <= 768) return;
+
+    const rect = card.getBoundingClientRect();
+
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = (event.clientY - rect.top) / rect.height;
+
+    const rotateX = (0.5 - y) * 10;
+    const rotateY = (x - 0.5) * 10;
+
+    card.style.transform =
+      `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+
+// Interactive movement for the hero artwork
+const heroArt = document.querySelector('.hero-art');
+
+if (heroArt) {
+  heroArt.addEventListener('mousemove', event => {
+    if (window.innerWidth <= 768) return;
+
+    const rect = heroArt.getBoundingClientRect();
+
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+    heroArt.style.transform =
+      `perspective(1000px) rotateY(${x * 8}deg) rotateX(${-y * 6}deg)`;
+  });
+
+  heroArt.addEventListener('mouseleave', () => {
+    heroArt.style.transform = '';
+  });
+}
