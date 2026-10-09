@@ -210,3 +210,19 @@ filter: none;
   opacity: 1 !important;
   visibility: visible !important;
 }
+/* EMERGENCY FIX: RESTORE ALL PORTFOLIO SECTIONS */
+
+.reveal {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+section,
+.section-wrap,
+.project-card,
+.skill-card,
+.timeline-item,
+.cert-grid {
+  visibility: visible;
+}
