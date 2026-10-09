@@ -194,3 +194,19 @@ transform: translateY(-3px);
 filter: none;
 }
 }
+/* Fix missing and invisible text */
+.gradient-text,
+.outline-text {
+  background: none !important;
+  color: #6effed !important;
+  -webkit-text-fill-color: #6effed !important;
+  -webkit-text-stroke: 0 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.hero h1,
+.hero h1 span {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
