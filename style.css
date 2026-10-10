@@ -855,3 +855,35 @@ h1 > span:not(.muted) {
   .contact-buttons { margin-bottom: 60px; }
   .contact-footer { flex-direction: column; }
 }
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.navbar nav a.active {
+  color: white;
+}
+
+.project-art > * {
+  transition: transform .2s ease;
+}
+
+.project-art:hover .mini-chassis {
+  transform: perspective(600px) rotateX(58deg) rotateZ(-25deg)
+    translate(var(--mouse-x, 0px), var(--mouse-y, 0px)) scale(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
