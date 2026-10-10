@@ -1,634 +1,1218 @@
+/* =========================================================
+   MUSTAQEEM FAREEDI
+   NEON AUTOMOTIVE ENGINEERING PORTFOLIO
+   Three.js r128
+========================================================= */
+
 const THREE = window.THREE;
 
 if (!THREE) {
-  console.error("Three.js did not load.");
-} else {
+  document.body.innerHTML = `
+    <div style="
+      min-height:100vh;
+      background:#030407;
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:Arial;
+      text-align:center;
+      padding:30px;
+    ">
+      <div>
+        <h1>Three.js could not load.</h1>
+        <p>Please refresh the page.</p>
+      </div>
+    </div>`;
+  throw new Error("Three.js failed to load");
+}
 
-  // =========================================================
-  // MAIN EV SCENE
-  // =========================================================
+
+/* =========================================================
+   LOADER
+========================================================= */
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const loader = document.getElementById("loader");
+
+    if (loader) {
+      loader.style.opacity = "0";
+      loader.style.pointerEvents = "none";
+
+      setTimeout(() => {
+        loader.remove();
+      }, 1000);
+    }
+  }, 1800);
+});
+
+
+/* =========================================================
+   GLOBAL CURSOR
+========================================================= */
+
+const cursor = document.querySelector(".cursor");
+const cursorDot = document.querySelector(".cursor-dot");
+
+window.addEventListener("mousemove", e => {
+
+  if (cursor) {
+    cursor.style.left = e.clientX + "px";
+    cursor.style.top = e.clientY + "px";
+  }
+
+  if (cursorDot) {
+    cursorDot.style.left = e.clientX + "px";
+    cursorDot.style.top = e.clientY + "px";
+  }
+
+});
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function makeRenderer(container, alpha = true) {
+
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: alpha
+  });
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  renderer.setSize(
+    container.clientWidth || 500,
+    container.clientHeight || 400
+  );
+
+  renderer.outputEncoding = THREE.sRGBEncoding;
+
+  renderer.shadowMap.enabled = true;
+
+  return renderer;
+}
+
+
+function resizeRenderer(renderer, camera, container) {
+
+  const width = container.clientWidth || 500;
+  const height = container.clientHeight || 400;
+
+  renderer.setSize(width, height, false);
+
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+
+}
+
+
+/* =========================================================
+   MATERIALS
+========================================================= */
+
+const MAT = {
+
+  dark: new THREE.MeshStandardMaterial({
+    color: 0x080b10,
+    metalness: .9,
+    roughness: .28
+  }),
+
+  graphite: new THREE.MeshStandardMaterial({
+    color: 0x1b2028,
+    metalness: .95,
+    roughness: .2
+  }),
+
+  silver: new THREE.MeshStandardMaterial({
+    color: 0x8995a5,
+    metalness: .9,
+    roughness: .2
+  }),
+
+  glass: new THREE.MeshPhysicalMaterial({
+    color: 0x3d7b9c,
+    transparent: true,
+    opacity: .14,
+    metalness: .15,
+    roughness: .05,
+    transmission: .25,
+    side: THREE.DoubleSide
+  }),
+
+  blue: new THREE.MeshStandardMaterial({
+    color: 0x167cff,
+    emissive: 0x083b8a,
+    emissiveIntensity: 2,
+    metalness: .65,
+    roughness: .2
+  }),
+
+  cyan: new THREE.MeshStandardMaterial({
+    color: 0x4eeaff,
+    emissive: 0x0b8ea8,
+    emissiveIntensity: 2.5,
+    metalness: .5,
+    roughness: .2
+  }),
+
+  orange: new THREE.MeshStandardMaterial({
+    color: 0xff762b,
+    emissive: 0x7a2100,
+    emissiveIntensity: 1.8,
+    metalness: .65,
+    roughness: .2
+  }),
+
+  violet: new THREE.MeshStandardMaterial({
+    color: 0x754dff,
+    emissive: 0x3210b0,
+    emissiveIntensity: 2,
+    metalness: .6,
+    roughness: .2
+  })
+};
+
+
+/* =========================================================
+   EV CREATION
+========================================================= */
+
+function createWheel() {
+
+  const group = new THREE.Group();
+
+  const tire = new THREE.Mesh(
+    new THREE.TorusGeometry(.72, .23, 16, 40),
+    new THREE.MeshStandardMaterial({
+      color: 0x050608,
+      metalness: .15,
+      roughness: .85
+    })
+  );
+
+  tire.rotation.y = Math.PI / 2;
+
+  group.add(tire);
+
+
+  const rim = new THREE.Mesh(
+    new THREE.CylinderGeometry(.48, .48, .16, 24),
+    MAT.silver
+  );
+
+  rim.rotation.z = Math.PI / 2;
+
+  group.add(rim);
+
+
+  const hub = new THREE.Mesh(
+    new THREE.CylinderGeometry(.16, .16, .22, 20),
+    MAT.blue
+  );
+
+  hub.rotation.z = Math.PI / 2;
+
+  group.add(hub);
+
+
+  for (let i = 0; i < 5; i++) {
+
+    const spoke = new THREE.Mesh(
+      new THREE.BoxGeometry(.07, .05, .55),
+      MAT.silver
+    );
+
+    spoke.position.z = .02;
+    spoke.rotation.z = (Math.PI * 2 / 5) * i;
+
+    group.add(spoke);
+  }
+
+  return group;
+}
+
+
+function createBattery() {
+
+  const battery = new THREE.Group();
+
+  const pack = new THREE.Mesh(
+    new THREE.BoxGeometry(6.6, .34, 2.8),
+    new THREE.MeshStandardMaterial({
+      color: 0x111821,
+      metalness: .75,
+      roughness: .32
+    })
+  );
+
+  battery.add(pack);
+
+
+  for (let x = -2.7; x <= 2.7; x += .68) {
+
+    const module = new THREE.Mesh(
+      new THREE.BoxGeometry(.54, .09, 2.45),
+      MAT.blue
+    );
+
+    module.position.set(x, .22, 0);
+
+    battery.add(module);
+
+  }
+
+
+  const rails = [];
+
+  [-1.25, 1.25].forEach(z => {
+
+    const rail = new THREE.Mesh(
+      new THREE.BoxGeometry(6.7, .13, .08),
+      MAT.silver
+    );
+
+    rail.position.set(0, .28, z);
+
+    battery.add(rail);
+
+  });
+
+
+  return battery;
+}
+
+
+function createMotor() {
+
+  const motor = new THREE.Group();
+
+  const body = new THREE.Mesh(
+    new THREE.CylinderGeometry(.55, .55, .9, 32),
+    MAT.orange
+  );
+
+  body.rotation.z = Math.PI / 2;
+
+  motor.add(body);
+
+
+  const ring = new THREE.Mesh(
+    new THREE.TorusGeometry(.55, .06, 12, 32),
+    MAT.silver
+  );
+
+  ring.rotation.y = Math.PI / 2;
+
+  motor.add(ring);
+
+
+  return motor;
+}
+
+
+function createEV() {
+
+  const car = new THREE.Group();
+
+
+  /* BATTERY */
+
+  const battery = createBattery();
+
+  battery.position.y = .45;
+
+  car.add(battery);
+
+
+  /* LOWER FRAME */
+
+  const frame = new THREE.Mesh(
+    new THREE.BoxGeometry(7.2, .25, 3.1),
+    MAT.graphite
+  );
+
+  frame.position.y = .72;
+
+  car.add(frame);
+
+
+  /* FRONT / REAR SUBFRAMES */
+
+  [-2.9, 2.9].forEach(x => {
+
+    const sub = new THREE.Mesh(
+      new THREE.BoxGeometry(1.0, .5, 2.8),
+      MAT.dark
+    );
+
+    sub.position.set(x, .85, 0);
+
+    car.add(sub);
+
+  });
+
+
+  /* BODY SIDE SKIRTS */
+
+  [-1.48, 1.48].forEach(z => {
+
+    const side = new THREE.Mesh(
+      new THREE.BoxGeometry(6.8, .45, .12),
+      MAT.silver
+    );
+
+    side.position.set(0, 1.0, z);
+
+    car.add(side);
+
+  });
+
+
+  /* CABIN */
+
+  const cabin = new THREE.Mesh(
+    new THREE.BoxGeometry(3.4, 1.1, 2.55),
+    MAT.glass
+  );
+
+  cabin.position.set(.25, 1.75, 0);
+
+  cabin.rotation.z = -.03;
+
+  car.add(cabin);
+
+
+  /* ROOF */
+
+  const roof = new THREE.Mesh(
+    new THREE.BoxGeometry(2.8, .12, 2.35),
+    MAT.glass
+  );
+
+  roof.position.set(.2, 2.32, 0);
+
+  car.add(roof);
+
+
+  /* A-PILLARS */
+
+  [-.85, .85].forEach(z => {
+
+    const pillar = new THREE.Mesh(
+      new THREE.BoxGeometry(1.15, .08, .08),
+      MAT.silver
+    );
+
+    pillar.position.set(-.65, 2.0, z);
+
+    pillar.rotation.z = -.6;
+
+    car.add(pillar);
+
+  });
+
+
+  /* FRONT NOSE */
+
+  const nose = new THREE.Mesh(
+    new THREE.BoxGeometry(1.15, .35, 2.7),
+    MAT.dark
+  );
+
+  nose.position.set(-3.3, 1.15, 0);
+
+  car.add(nose);
+
+
+  /* REAR */
+
+  const rear = new THREE.Mesh(
+    new THREE.BoxGeometry(.8, .45, 2.7),
+    MAT.dark
+  );
+
+  rear.position.set(3.3, 1.15, 0);
+
+  car.add(rear);
+
+
+  /* HEADLIGHTS */
+
+  [-.95, .95].forEach(z => {
+
+    const light = new THREE.Mesh(
+      new THREE.BoxGeometry(.18, .08, .5),
+      MAT.cyan
+    );
+
+    light.position.set(-3.92, 1.35, z);
+
+    car.add(light);
+
+  });
+
+
+  /* REAR LIGHTS */
+
+  [-.95, .95].forEach(z => {
+
+    const light = new THREE.Mesh(
+      new THREE.BoxGeometry(.1, .1, .45),
+      MAT.orange
+    );
+
+    light.position.set(3.72, 1.35, z);
+
+    car.add(light);
+
+  });
+
+
+  /* WHEELS */
+
+  const wheelPositions = [
+    [-2.45, .72, -1.62],
+    [-2.45, .72, 1.62],
+    [2.45, .72, -1.62],
+    [2.45, .72, 1.62]
+  ];
+
+  wheelPositions.forEach(p => {
+
+    const wheel = createWheel();
+
+    wheel.position.set(...p);
+
+    car.add(wheel);
+
+  });
+
+
+  /* MOTORS */
+
+  const frontMotor = createMotor();
+
+  frontMotor.position.set(-2.45, .85, 0);
+
+  car.add(frontMotor);
+
+
+  const rearMotor = createMotor();
+
+  rearMotor.position.set(2.45, .85, 0);
+
+  car.add(rearMotor);
+
+
+  /* INVERTER */
+
+  const inverter = new THREE.Mesh(
+    new THREE.BoxGeometry(1.1, .4, 1.25),
+    MAT.violet
+  );
+
+  inverter.position.set(0, 1.25, 0);
+
+  car.add(inverter);
+
+
+  /* BUS BARS */
+
+  [-.35, .35].forEach(z => {
+
+    const bus = new THREE.Mesh(
+      new THREE.BoxGeometry(5.4, .08, .06),
+      MAT.orange
+    );
+
+    bus.position.set(0, 1.25, z);
+
+    car.add(bus);
+
+  });
+
+
+  /* SUSPENSION ARMS */
+
+  wheelPositions.forEach(p => {
+
+    const arm = new THREE.Mesh(
+      new THREE.BoxGeometry(1.0, .08, .08),
+      MAT.silver
+    );
+
+    arm.position.set(p[0], .8, p[2] * .65);
+
+    arm.rotation.y = p[2] > 0 ? .35 : -.35;
+
+    car.add(arm);
+
+  });
+
+
+  return car;
+}
+
+
+/* =========================================================
+   EV HERO SCENE
+========================================================= */
+
+function initEV() {
 
   const container = document.getElementById("ev-container");
 
-  if (container) {
+  if (!container) return;
 
-    const scene = new THREE.Scene();
+  container.innerHTML = "";
 
-    scene.background = new THREE.Color(0x05060a);
+  const scene = new THREE.Scene();
 
-    const camera = new THREE.PerspectiveCamera(
-      38,
-      Math.max(container.clientWidth, 1) /
-      Math.max(container.clientHeight, 1),
-      0.1,
-      1000
-    );
+  scene.fog = new THREE.FogExp2(0x030407, .035);
 
-    camera.position.set(7.5, 4.8, 10);
-    camera.lookAt(0, 0.5, 0);
 
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true
-    });
+  const camera = new THREE.PerspectiveCamera(
+    35,
+    container.clientWidth / container.clientHeight,
+    .1,
+    100
+  );
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  camera.position.set(8, 5.2, 10);
 
-    renderer.setSize(
-      Math.max(container.clientWidth, 1),
-      Math.max(container.clientHeight, 1)
-    );
 
-    renderer.outputEncoding = THREE.sRGBEncoding;
+  const renderer = makeRenderer(container);
 
-    container.innerHTML = "";
-    container.appendChild(renderer.domElement);
+  container.appendChild(renderer.domElement);
 
-    // ---------------------------------------------------------
-    // LIGHTING
-    // ---------------------------------------------------------
 
-    scene.add(new THREE.AmbientLight(0xffffff, 1.3));
+  /* LIGHTS */
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
-    keyLight.position.set(5, 8, 8);
-    scene.add(keyLight);
+  const ambient = new THREE.AmbientLight(0x8aa8ff, .45);
 
-    const purpleLight = new THREE.PointLight(
-      0x8b5cff,
-      25,
-      20
-    );
-    purpleLight.position.set(-5, 3, 3);
-    scene.add(purpleLight);
+  scene.add(ambient);
 
-    const blueLight = new THREE.PointLight(
-      0x43d9ff,
-      22,
-      20
-    );
-    blueLight.position.set(5, 2, -4);
-    scene.add(blueLight);
 
-    // ---------------------------------------------------------
-    // EV GROUP
-    // ---------------------------------------------------------
+  const key = new THREE.DirectionalLight(0x8dc5ff, 2.4);
 
-    const car = new THREE.Group();
-    scene.add(car);
+  key.position.set(-5, 8, 8);
 
-    // ---------------------------------------------------------
-    // MATERIALS
-    // ---------------------------------------------------------
+  scene.add(key);
 
-    const darkMetal = new THREE.MeshStandardMaterial({
-      color: 0x151923,
-      metalness: 0.9,
-      roughness: 0.25
-    });
 
-    const silverMetal = new THREE.MeshStandardMaterial({
-      color: 0xbcc4d4,
-      metalness: 0.95,
-      roughness: 0.18
-    });
+  const rim = new THREE.PointLight(0x674dff, 5, 15);
 
-    const batteryMaterial = new THREE.MeshStandardMaterial({
-      color: 0x24194f,
-      metalness: 0.65,
-      roughness: 0.3,
-      emissive: 0x29155c,
-      emissiveIntensity: 0.7
-    });
+  rim.position.set(4, 3, -5);
 
-    const orangeMaterial = new THREE.MeshStandardMaterial({
-      color: 0xff783d,
-      metalness: 0.8,
-      roughness: 0.2,
-      emissive: 0x451507,
-      emissiveIntensity: 0.8
-    });
+  scene.add(rim);
 
-    const glassMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x161b2c,
-      metalness: 0.1,
-      roughness: 0.08,
+
+  const orangeLight = new THREE.PointLight(0xff6425, 3, 10);
+
+  orangeLight.position.set(3, 1, 3);
+
+  scene.add(orangeLight);
+
+
+  /* CAR */
+
+  const car = createEV();
+
+  scene.add(car);
+
+  car.rotation.y = -.35;
+
+
+  /* GROUND */
+
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(30, 30),
+    new THREE.MeshBasicMaterial({
+      color: 0x020306,
       transparent: true,
-      opacity: 0.42,
-      transmission: 0.25
-    });
+      opacity: .7
+    })
+  );
 
-    // ---------------------------------------------------------
-    // BATTERY SKATEBOARD
-    // ---------------------------------------------------------
+  ground.rotation.x = -Math.PI / 2;
 
-    const battery = new THREE.Mesh(
-      new THREE.BoxGeometry(5.8, 0.42, 2.55),
-      batteryMaterial
-    );
+  ground.position.y = -.02;
 
-    battery.position.y = 0.65;
-    car.add(battery);
+  scene.add(ground);
 
-    // Battery modules
 
-    for (let x = -2.4; x <= 2.4; x += 0.8) {
+  /* ENERGY RING */
 
-      const module = new THREE.Mesh(
-        new THREE.BoxGeometry(0.68, 0.16, 2.15),
-        new THREE.MeshStandardMaterial({
-          color: 0x46318c,
-          metalness: 0.5,
-          roughness: 0.35,
-          emissive: 0x39206d,
-          emissiveIntensity: 0.55
-        })
-      );
+  const ring = new THREE.Mesh(
+    new THREE.TorusGeometry(4.4, .015, 8, 120),
+    MAT.cyan
+  );
 
-      module.position.set(x, 0.89, 0);
-      car.add(module);
-    }
+  ring.rotation.x = Math.PI / 2;
 
-    // ---------------------------------------------------------
-    // VEHICLE FLOOR / FRAME
-    // ---------------------------------------------------------
+  ring.position.y = .05;
 
-    const floor = new THREE.Mesh(
-      new THREE.BoxGeometry(6.5, 0.18, 3.0),
-      darkMetal
-    );
+  scene.add(ring);
 
-    floor.position.y = 1.05;
-    car.add(floor);
 
-    // ---------------------------------------------------------
-    // AERODYNAMIC BODY
-    // ---------------------------------------------------------
+  /* GRID */
 
-    const bodyShape = new THREE.Shape();
+  const grid = new THREE.GridHelper(
+    20,
+    30,
+    0x12325a,
+    0x071326
+  );
 
-    bodyShape.moveTo(-3.4, 0);
-    bodyShape.lineTo(-2.7, 0.8);
-    bodyShape.lineTo(-1.4, 1.2);
-    bodyShape.lineTo(-0.8, 1.85);
-    bodyShape.lineTo(0.9, 1.85);
-    bodyShape.lineTo(1.8, 1.35);
-    bodyShape.lineTo(3.0, 1.05);
-    bodyShape.lineTo(3.55, 0.35);
-    bodyShape.lineTo(3.2, 0);
-    bodyShape.lineTo(-3.4, 0);
+  grid.position.y = -.01;
 
-    const bodyGeometry = new THREE.ExtrudeGeometry(
-      bodyShape,
-      {
-        depth: 2.65,
-        bevelEnabled: true,
-        bevelSegments: 4,
-        bevelSize: 0.12,
-        bevelThickness: 0.12
-      }
-    );
+  scene.add(grid);
 
-    bodyGeometry.center();
 
-    const body = new THREE.Mesh(
-      bodyGeometry,
-      new THREE.MeshPhysicalMaterial({
-        color: 0x6e7180,
-        metalness: 0.65,
-        roughness: 0.18,
-        transparent: true,
-        opacity: 0.16,
-        side: THREE.DoubleSide
-      })
-    );
+  /* PARTICLES */
 
-    body.rotation.x = Math.PI / 2;
-    body.position.y = 1.35;
+  const particleGeometry = new THREE.BufferGeometry();
 
-    car.add(body);
+  const count = 500;
 
-    // ---------------------------------------------------------
-    // CABIN
-    // ---------------------------------------------------------
+  const positions = new Float32Array(count * 3);
 
-    const cabin = new THREE.Mesh(
-      new THREE.BoxGeometry(3.2, 1.05, 2.25),
-      glassMaterial
-    );
+  for (let i = 0; i < count; i++) {
 
-    cabin.position.set(0.15, 2.15, 0);
-    cabin.rotation.z = -0.04;
+    positions[i * 3] = (Math.random() - .5) * 18;
 
-    car.add(cabin);
+    positions[i * 3 + 1] = Math.random() * 7;
 
-    // Roof frame
-
-    const roofFrame = new THREE.Mesh(
-      new THREE.BoxGeometry(3.45, 0.1, 2.4),
-      silverMetal
-    );
-
-    roofFrame.position.set(0.15, 2.68, 0);
-
-    car.add(roofFrame);
-
-    // ---------------------------------------------------------
-    // FRONT / REAR SUBFRAMES
-    // ---------------------------------------------------------
-
-    function createBeam(x, z, length, rotation = 0) {
-
-      const beam = new THREE.Mesh(
-        new THREE.BoxGeometry(length, 0.12, 0.14),
-        silverMetal
-      );
-
-      beam.position.set(x, 1.05, z);
-      beam.rotation.y = rotation;
-
-      car.add(beam);
-    }
-
-    createBeam(-2.7, 1.15, 1.6, 0.1);
-    createBeam(-2.7, -1.15, 1.6, -0.1);
-
-    createBeam(2.7, 1.15, 1.6, -0.1);
-    createBeam(2.7, -1.15, 1.6, 0.1);
-
-    // ---------------------------------------------------------
-    // MOTORS
-    // ---------------------------------------------------------
-
-    function createMotor(x) {
-
-      const motor = new THREE.Mesh(
-        new THREE.CylinderGeometry(
-          0.48,
-          0.48,
-          0.75,
-          32
-        ),
-        orangeMaterial
-      );
-
-      motor.rotation.z = Math.PI / 2;
-      motor.position.set(x, 0.75, 0);
-
-      car.add(motor);
-
-      const ring = new THREE.Mesh(
-        new THREE.TorusGeometry(
-          0.49,
-          0.045,
-          12,
-          32
-        ),
-        new THREE.MeshStandardMaterial({
-          color: 0xffb078,
-          emissive: 0xff5d24,
-          emissiveIntensity: 1
-        })
-      );
-
-      ring.rotation.z = Math.PI / 2;
-      ring.position.set(x, 0.75, 0);
-
-      car.add(ring);
-    }
-
-    createMotor(-2.5);
-    createMotor(2.5);
-
-    // ---------------------------------------------------------
-    // WHEELS
-    // ---------------------------------------------------------
-
-    function createWheel(x, z) {
-
-      const wheel = new THREE.Group();
-
-      const tire = new THREE.Mesh(
-        new THREE.CylinderGeometry(
-          0.75,
-          0.75,
-          0.34,
-          40
-        ),
-        new THREE.MeshStandardMaterial({
-          color: 0x08090d,
-          metalness: 0.3,
-          roughness: 0.72
-        })
-      );
-
-      tire.rotation.x = Math.PI / 2;
-
-      wheel.add(tire);
-
-      const rim = new THREE.Mesh(
-        new THREE.CylinderGeometry(
-          0.45,
-          0.45,
-          0.37,
-          32
-        ),
-        silverMetal
-      );
-
-      rim.rotation.x = Math.PI / 2;
-
-      wheel.add(rim);
-
-      const hub = new THREE.Mesh(
-        new THREE.CylinderGeometry(
-          0.14,
-          0.14,
-          0.42,
-          24
-        ),
-        orangeMaterial
-      );
-
-      hub.rotation.x = Math.PI / 2;
-
-      wheel.add(hub);
-
-      wheel.position.set(x, 0.72, z);
-
-      car.add(wheel);
-    }
-
-    createWheel(-2.35, 1.48);
-    createWheel(-2.35, -1.48);
-    createWheel(2.35, 1.48);
-    createWheel(2.35, -1.48);
-
-    // ---------------------------------------------------------
-    // SUSPENSION
-    // ---------------------------------------------------------
-
-    function createSuspension(x, z) {
-
-      const arm = new THREE.Mesh(
-        new THREE.BoxGeometry(0.95, 0.08, 0.08),
-        silverMetal
-      );
-
-      arm.position.set(x, 0.88, z);
-      arm.rotation.y = z > 0 ? -0.25 : 0.25;
-
-      car.add(arm);
-
-      const strut = new THREE.Mesh(
-        new THREE.CylinderGeometry(
-          0.055,
-          0.055,
-          0.75,
-          12
-        ),
-        silverMetal
-      );
-
-      strut.position.set(x, 1.25, z);
-
-      car.add(strut);
-    }
-
-    [-1,1].forEach(side => {
-
-      createSuspension(-2.35, side * 1.15);
-      createSuspension(2.35, side * 1.15);
-
-    });
-
-    // ---------------------------------------------------------
-    // INVERTER / POWER ELECTRONICS
-    // ---------------------------------------------------------
-
-    const inverter = new THREE.Mesh(
-      new THREE.BoxGeometry(0.95, 0.32, 1.35),
-      orangeMaterial
-    );
-
-    inverter.position.set(-0.8, 1.45, 0);
-
-    car.add(inverter);
-
-    // inverter fins
-
-    for (let i = -0.5; i <= 0.5; i += 0.2) {
-
-      const fin = new THREE.Mesh(
-        new THREE.BoxGeometry(0.04, 0.1, 1.15),
-        silverMetal
-      );
-
-      fin.position.set(
-        -0.8 + i,
-        1.65,
-        0
-      );
-
-      car.add(fin);
-    }
-
-    // ---------------------------------------------------------
-    // HIGH VOLTAGE CABLES
-    // ---------------------------------------------------------
-
-    function createCable(points, color) {
-
-      const curve = new THREE.CatmullRomCurve3(points);
-
-      const geometry = new THREE.TubeGeometry(
-        curve,
-        30,
-        0.035,
-        8,
-        false
-      );
-
-      const material = new THREE.MeshBasicMaterial({
-        color,
-        transparent: true,
-        opacity: 0.95
-      });
-
-      car.add(new THREE.Mesh(geometry, material));
-    }
-
-    createCable([
-      new THREE.Vector3(-0.7,1.48,0.4),
-      new THREE.Vector3(-1.5,1.25,0.5),
-      new THREE.Vector3(-2.5,1.05,0)
-    ],0x8b5cff);
-
-    createCable([
-      new THREE.Vector3(0.0,1.48,0),
-      new THREE.Vector3(1.3,1.25,0),
-      new THREE.Vector3(2.5,1.05,0)
-    ],0x54eaff);
-
-    // ---------------------------------------------------------
-    // LABELS
-    // ---------------------------------------------------------
-
-    function makeLabel(text, position, color) {
-
-      const canvas = document.createElement("canvas");
-      canvas.width = 512;
-      canvas.height = 128;
-
-      const ctx = canvas.getContext("2d");
-
-      ctx.clearRect(0,0,512,128);
-
-      ctx.font = "500 30px monospace";
-      ctx.fillStyle = color;
-      ctx.fillText(text,20,55);
-
-      ctx.fillStyle = "rgba(255,255,255,.4)";
-      ctx.fillRect(20,75,280,2);
-
-      const texture = new THREE.CanvasTexture(canvas);
-
-      const material = new THREE.SpriteMaterial({
-        map:texture,
-        transparent:true
-      });
-
-      const sprite = new THREE.Sprite(material);
-
-      sprite.scale.set(2.5,0.62,1);
-      sprite.position.copy(position);
-
-      scene.add(sprite);
-
-      return sprite;
-    }
-
-    makeLabel(
-      "BATTERY // HV PACK",
-      new THREE.Vector3(-3.6,0.7,0),
-      "#9b7cff"
-    );
-
-    makeLabel(
-      "INVERTER // SiC",
-      new THREE.Vector3(-1.4,2.1,0),
-      "#ff9b62"
-    );
-
-    makeLabel(
-      "DUAL E-MOTOR",
-      new THREE.Vector3(2.9,1.8,0),
-      "#54eaff"
-    );
-
-    // ---------------------------------------------------------
-    // GROUND
-    // ---------------------------------------------------------
-
-    const ground = new THREE.Mesh(
-      new THREE.CircleGeometry(6.8,64),
-      new THREE.MeshBasicMaterial({
-        color:0x111426,
-        transparent:true,
-        opacity:.45
-      })
-    );
-
-    ground.rotation.x = -Math.PI/2;
-    ground.position.y = -0.05;
-
-    scene.add(ground);
-
-    // ---------------------------------------------------------
-    // POSITION
-    // ---------------------------------------------------------
-
-    car.rotation.y = -0.42;
-    car.rotation.x = 0.02;
-
-    car.scale.setScalar(1.08);
-
-    // ---------------------------------------------------------
-    // RESIZE
-    // ---------------------------------------------------------
-
-    function resize() {
-
-      const w = Math.max(container.clientWidth, 320);
-      const h = Math.max(container.clientHeight, 400);
-
-      camera.aspect = w / h;
-
-      camera.updateProjectionMatrix();
-
-      renderer.setSize(w,h,false);
-    }
-
-    resize();
-
-    window.addEventListener(
-      "resize",
-      resize,
-      {passive:true}
-    );
-
-    // ---------------------------------------------------------
-    // MOUSE
-    // ---------------------------------------------------------
-
-    let mouseX = 0;
-    let mouseY = 0;
-
-    window.addEventListener(
-      "mousemove",
-      event => {
-
-        mouseX =
-          (event.clientX / window.innerWidth - 0.5);
-
-        mouseY =
-          (event.clientY / window.innerHeight - 0.5);
-
-      },
-      {passive:true}
-    );
-
-    // ---------------------------------------------------------
-    // ANIMATION
-    // ---------------------------------------------------------
-
-    const clock = new THREE.Clock();
-
-    function animate() {
-
-      requestAnimationFrame(animate);
-
-      const t = clock.getElapsedTime();
-
-      car.rotation.y +=
-        (-0.42 + mouseX * 0.18 - car.rotation.y) * 0.025;
-
-      car.rotation.x +=
-        (mouseY * -0.06 - car.rotation.x) * 0.025;
-
-      car.position.y =
-        Math.sin(t * 0.8) * 0.045;
-
-      renderer.render(scene,camera);
-    }
-
-    animate();
-
-  } else {
-
-    console.warn(
-      "EV container not found: #ev-container"
-    );
+    positions[i * 3 + 2] = (Math.random() - .5) * 14;
 
   }
+
+  particleGeometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(positions, 3)
+  );
+
+  const particles = new THREE.Points(
+    particleGeometry,
+    new THREE.PointsMaterial({
+      color: 0x55cfff,
+      size: .025,
+      transparent: true,
+      opacity: .7
+    })
+  );
+
+  scene.add(particles);
+
+
+  /* MOUSE */
+
+  let mouseX = 0;
+  let mouseY = 0;
+
+  container.addEventListener("mousemove", e => {
+
+    const rect = container.getBoundingClientRect();
+
+    mouseX =
+      ((e.clientX - rect.left) / rect.width - .5) * 2;
+
+    mouseY =
+      ((e.clientY - rect.top) / rect.height - .5) * 2;
+
+  });
+
+
+  function animate() {
+
+    requestAnimationFrame(animate);
+
+    car.rotation.y +=
+      (-.35 + mouseX * .25 - car.rotation.y) * .025;
+
+    car.position.y =
+      Math.sin(Date.now() * .001) * .035;
+
+    ring.rotation.z += .0015;
+
+    particles.rotation.y += .00025;
+
+    camera.position.x +=
+      (8 + mouseX * 1.3 - camera.position.x) * .025;
+
+    camera.position.y +=
+      (5.2 - mouseY * .6 - camera.position.y) * .025;
+
+    camera.lookAt(0, 1, 0);
+
+    renderer.render(scene, camera);
+
+  }
+
+  animate();
+
+
+  window.addEventListener("resize", () => {
+    resizeRenderer(renderer, camera, container);
+  });
+
 }
+
+
+/* =========================================================
+   BATTERY SCENE
+========================================================= */
+
+function initBattery() {
+
+  const container = document.getElementById("battery-scene");
+
+  if (!container) return;
+
+  const scene = new THREE.Scene();
+
+  const camera = new THREE.PerspectiveCamera(
+    35,
+    container.clientWidth / container.clientHeight,
+    .1,
+    100
+  );
+
+  camera.position.set(5, 4, 7);
+
+  const renderer = makeRenderer(container);
+
+  container.appendChild(renderer.domElement);
+
+
+  scene.add(new THREE.AmbientLight(0x668cff, .7));
+
+  const light = new THREE.PointLight(0x55eaff, 5);
+
+  light.position.set(2, 4, 4);
+
+  scene.add(light);
+
+
+  const battery = createBattery();
+
+  battery.scale.set(1.05, 1.05, 1.05);
+
+  scene.add(battery);
+
+
+  const ring = new THREE.Mesh(
+    new THREE.TorusGeometry(3, .015, 8, 100),
+    MAT.cyan
+  );
+
+  ring.rotation.x = Math.PI / 2;
+
+  ring.position.y = -.3;
+
+  scene.add(ring);
+
+
+  function animate() {
+
+    requestAnimationFrame(animate);
+
+    battery.rotation.y += .003;
+
+    ring.rotation.z -= .002;
+
+    renderer.render(scene, camera);
+
+  }
+
+  animate();
+
+
+  window.addEventListener("resize", () => {
+    resizeRenderer(renderer, camera, container);
+  });
+
+}
+
+
+/* =========================================================
+   GENERIC TECH SCENE
+========================================================= */
+
+function createTechScene(id, type) {
+
+  const container = document.getElementById(id);
+
+  if (!container) return;
+
+  const scene = new THREE.Scene();
+
+  const camera = new THREE.PerspectiveCamera(
+    40,
+    container.clientWidth / container.clientHeight,
+    .1,
+    100
+  );
+
+  camera.position.set(3.8, 2.8, 5);
+
+  const renderer = makeRenderer(container);
+
+  container.appendChild(renderer.domElement);
+
+
+  scene.add(
+    new THREE.AmbientLight(0x789aff, .6)
+  );
+
+
+  const light = new THREE.PointLight(
+    type === "orange" ? 0xff6b25 : 0x4e9dff,
+    4
+  );
+
+  light.position.set(2, 4, 3);
+
+  scene.add(light);
+
+
+  const group = new THREE.Group();
+
+  scene.add(group);
+
+
+  if (type === "chip") {
+
+    const board = new THREE.Mesh(
+      new THREE.BoxGeometry(3, .12, 2),
+      MAT.dark
+    );
+
+    group.add(board);
+
+
+    for (let x = -1.1; x <= 1.1; x += .55) {
+
+      for (let z = -.65; z <= .65; z += .55) {
+
+        const chip = new THREE.Mesh(
+          new THREE.BoxGeometry(.32, .15, .32),
+          MAT.blue
+        );
+
+        chip.position.set(x, .15, z);
+
+        group.add(chip);
+
+      }
+
+    }
+
+    for (let i = 0; i < 8; i++) {
+
+      const trace = new THREE.Mesh(
+        new THREE.BoxGeometry(1.8, .025, .025),
+        MAT.cyan
+      );
+
+      trace.position.set(
+        0,
+        .1,
+        -.9 + i * .25
+      );
+
+      group.add(trace);
+
+    }
+
+  }
+
+
+  if (type === "power") {
+
+    const coil = new THREE.Mesh(
+      new THREE.TorusGeometry(1, .22, 12, 40),
+      MAT.orange
+    );
+
+    coil.rotation.x = Math.PI / 2;
+
+    group.add(coil);
+
+
+    const core = new THREE.Mesh(
+      new THREE.CylinderGeometry(.55, .55, 1.3, 24),
+      MAT.graphite
+    );
+
+    group.add(core);
+
+  }
+
+
+  if (type === "control") {
+
+    for (let i = 0; i < 5; i++) {
+
+      const box = new THREE.Mesh(
+        new THREE.BoxGeometry(2.6 - i * .3, .18, .18),
+        i % 2 ? MAT.blue : MAT.violet
+      );
+
+      box.position.y = i * .35 - .6;
+
+      group.add(box);
+
+    }
+
+  }
+
+
+  if (type === "software") {
+
+    const nodes = [];
+
+    for (let i = 0; i < 14; i++) {
+
+      const node = new THREE.Mesh(
+        new THREE.SphereGeometry(.12, 12, 12),
+        MAT.cyan
+      );
+
+      node.position.set(
+        (Math.random() - .5) * 3,
+        (Math.random() - .5) * 2,
+        (Math.random() - .5) * 2
+      );
+
+      group.add(node);
+
+      nodes.push(node);
+
+    }
+
+  }
+
+
+  function animate() {
+
+    requestAnimationFrame(animate);
+
+    group.rotation.y += .006;
+
+    group.rotation.x =
+      Math.sin(Date.now() * .0007) * .1;
+
+    renderer.render(scene, camera);
+
+  }
+
+  animate();
+
+
+  window.addEventListener("resize", () => {
+    resizeRenderer(renderer, camera, container);
+  });
+
+}
+
+
+/* =========================================================
+   PROJECT SCENE
+========================================================= */
+
+function projectScene(id, type) {
+
+  const container = document.getElementById(id);
+
+  if (!container) return;
+
+  const scene = new THREE.Scene();
+
+  const camera = new THREE.PerspectiveCamera(
+    40,
+    container.clientWidth / container.clientHeight,
+    .1,
+    100
+  );
+
+  camera.position.set(5, 3, 6);
+
+  const renderer = makeRenderer(container);
+
+  container.appendChild(renderer.domElement);
+
+
+  scene.add(
+    new THREE.AmbientLight(0x668cff, .8)
+  );
+
+
+  const light = new THREE.PointLight(0x55cfff, 5);
+
+  light.position.set(3, 5, 4);
+
+  scene.add(light);
+
+
+  const group = new THREE.Group();
+
+  scene.add(group);
+
+
+  if (type === "ev") {
+
+    const ev = createEV();
+
+    ev.scale.set(.65, .65, .65);
+
+    group.add(ev);
+
+  }
+
+
+  if (type === "solar") {
+
+    for (let x = -2; x <= 2; x++) {
+
+      for (let z = -1; z <= 1; z++) {
+
+        const panel = new THREE.Mesh(
+          new THREE.BoxGeometry(.85, .06, .85),
+          MAT.blue
+        );
+
+        panel.position.set(x * .9, 0, z * .9);
+
+        group.add(panel);
+
+      }
+
+    }
+
+  }
+
+
+  if (type === "ml") {
+
+    for (let i = 0; i < 25; i++) {
+
+      const sphere = new THREE.Mesh(
+        new THREE.SphereGeometry(.1, 12, 12),
+        MAT.violet
+      );
+
+      sphere.position.set(
+        (Math.random() - .5) * 3,
+        (Math.random() - .5) * 2,
+        (Math.random() - .5) * 2
+      );
+
+      group.add(sphere);
+
+    }
+
+  }
+
+
+  if (type === "gps") {
+
+    const earth = new THREE.Mesh(
+      new THREE.SphereGeometry(1.5, 32, 32),
+      new THREE.MeshStandardMaterial({
+        color: 0x123c78,
+        emissive: 0x071a44,
+        emissiveIntensity: 1,
+        wireframe: true
+      })
+    );
+
+    group.add(earth);
+
+
+    for (let i = 0; i < 5; i++) {
+
+      const satellite = new THREE.Mesh(
+        new THREE.BoxGeometry(.2, .08, .08),
+        MAT.orange
+      );
+
+      const angle = i * 1.25;
+
+      satellite.position.set(
+        Math.cos(angle) * 2.3,
+        Math.sin(angle * 1.7) * 1.2,
+        Math.sin(angle) * 2.3
+      );
+
+      group.add(satellite);
+
+    }
+
+  }
+
+
+  function animate() {
+
+    requestAnimationFrame(animate);
+
+    group.rotation.y += .005;
+
+    renderer.render(scene, camera);
+
+  }
+
+  animate();
+
+
+  window.addEventListener("resize", () => {
+    resizeRenderer(renderer, camera, container);
+  });
+
+}
+
+
+/* =========================================================
+   INITIALIZE EVERYTHING
+========================================================= */
+
+initEV();
+
+initBattery();
+
+createTechScene("chip-scene", "chip");
+createTechScene("power-scene", "power");
+createTechScene("control-scene", "control");
+createTechScene("software-scene", "software");
+
+projectScene("ev-project", "ev");
+projectScene("solar-project", "solar");
+projectScene("ml-project", "ml");
+projectScene("gps-project", "gps");
+
+
+/* =========================================================
+   SCROLL EFFECT
+========================================================= */
+
+window.addEventListener("scroll", () => {
+
+  const scrollY = window.scrollY;
+
+  const hero = document.querySelector(".hero-copy");
+
+  if (hero && scrollY < window.innerHeight) {
+
+    hero.style.transform =
+      `translateY(${scrollY * .12}px)`;
+
+    hero.style.opacity =
+      Math.max(.25, 1 - scrollY / 800);
+
+  }
+
+});
