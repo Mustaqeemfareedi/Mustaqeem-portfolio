@@ -1,64 +1,46 @@
-/* =========================================================
-   MUSTAQEEM FAREEDI — FUTURISTIC EEE PORTFOLIO
-   3D ENGINEERING WORLD
-========================================================= */
-
 const THREE = window.THREE;
-
-/* =========================================================
-   LOADER
-========================================================= */
-
-window.addEventListener("load", () => {
-    setTimeout(() => {
-        const loader = document.getElementById("loader");
-
-        if (loader) {
-            loader.classList.add("hidden");
-        }
-    }, 1200);
-});
-
-
-/* =========================================================
-   THREE.JS SETUP
-========================================================= */
 
 const container = document.getElementById("three-container");
 
-if (container && THREE) {
+if (!container || !THREE) {
+    console.error("Three.js could not be loaded.");
+} else {
+
+    /* =====================================================
+       SCENE
+    ===================================================== */
 
     const scene = new THREE.Scene();
 
-    scene.background = new THREE.Color(0x030609);
+    scene.background = new THREE.Color(0x020406);
 
     scene.fog = new THREE.FogExp2(
-        0x030609,
-        0.055
+        0x020406,
+        0.045
     );
 
 
-    /* -----------------------------------------------------
+    /* =====================================================
        CAMERA
-    ----------------------------------------------------- */
+    ===================================================== */
 
     const camera = new THREE.PerspectiveCamera(
-        42,
+        38,
         container.clientWidth / container.clientHeight,
         0.1,
         1000
     );
 
     camera.position.set(
-        8,
-        4.5,
+        8.5,
+        4.8,
         11
     );
 
 
-    /* -----------------------------------------------------
+    /* =====================================================
        RENDERER
-    ----------------------------------------------------- */
+    ===================================================== */
 
     const renderer = new THREE.WebGLRenderer({
         antialias: true,
@@ -74,8 +56,7 @@ if (container && THREE) {
         container.clientHeight
     );
 
-    renderer.outputEncoding =
-        THREE.sRGBEncoding;
+    renderer.outputEncoding = THREE.sRGBEncoding;
 
     container.appendChild(renderer.domElement);
 
@@ -84,26 +65,24 @@ if (container && THREE) {
        LIGHTING
     ===================================================== */
 
-    const ambientLight =
+    scene.add(
         new THREE.AmbientLight(
-            0x7aa9a5,
-            0.35
-        );
-
-    scene.add(ambientLight);
-
+            0x9bb8b7,
+            0.32
+        )
+    );
 
     const cyanLight =
         new THREE.PointLight(
-            0x5dffe9,
-            5,
+            0x52ffe7,
+            7,
             30
         );
 
     cyanLight.position.set(
-        2,
+        3,
         5,
-        4
+        5
     );
 
     scene.add(cyanLight);
@@ -111,212 +90,499 @@ if (container && THREE) {
 
     const blueLight =
         new THREE.PointLight(
-            0x287dff,
+            0x246cff,
             3,
             25
         );
 
     blueLight.position.set(
-        -6,
-        1,
+        -7,
+        2,
         -4
     );
 
     scene.add(blueLight);
 
 
-    /* =====================================================
-       MAIN ENGINEERING PLATFORM
-    ===================================================== */
-
-    const world = new THREE.Group();
-
-    scene.add(world);
-
-
-    const platformGeometry =
-        new THREE.CylinderGeometry(
-            5.2,
-            5.2,
-            0.18,
-            96
+    const orangeLight =
+        new THREE.PointLight(
+            0xff6b32,
+            1.5,
+            18
         );
 
-    const platformMaterial =
-        new THREE.MeshStandardMaterial({
-            color: 0x071115,
-            metalness: 0.85,
-            roughness: 0.35
-        });
-
-    const platform =
-        new THREE.Mesh(
-            platformGeometry,
-            platformMaterial
-        );
-
-    platform.position.y = -2.4;
-
-    world.add(platform);
-
-
-    /* =====================================================
-       PLATFORM RINGS
-    ===================================================== */
-
-    function createRing(radius, y, opacity) {
-
-        const geometry =
-            new THREE.RingGeometry(
-                radius - 0.012,
-                radius,
-                128
-            );
-
-        const material =
-            new THREE.MeshBasicMaterial({
-                color: 0x5dffe9,
-                transparent: true,
-                opacity: opacity,
-                side: THREE.DoubleSide
-            });
-
-        const ring =
-            new THREE.Mesh(
-                geometry,
-                material
-            );
-
-        ring.rotation.x =
-            -Math.PI / 2;
-
-        ring.position.y = y;
-
-        world.add(ring);
-
-        return ring;
-    }
-
-
-    const ring1 =
-        createRing(5.0, -2.29, 0.35);
-
-    const ring2 =
-        createRing(3.8, -2.27, 0.20);
-
-    const ring3 =
-        createRing(2.6, -2.25, 0.15);
-
-
-    /* =====================================================
-       CENTRAL POWER CORE
-    ===================================================== */
-
-    const coreGroup =
-        new THREE.Group();
-
-    coreGroup.position.set(
-        0,
-        0,
-        0
+    orangeLight.position.set(
+        2,
+        1,
+        3
     );
 
-    world.add(coreGroup);
+    scene.add(orangeLight);
 
 
-    const coreGeometry =
-        new THREE.IcosahedronGeometry(
-            1.15,
-            2
-        );
+    /* =====================================================
+       MAIN CAR GROUP
+    ===================================================== */
 
-    const coreMaterial =
+    const car =
+        new THREE.Group();
+
+    car.rotation.y = -0.32;
+
+    scene.add(car);
+
+
+    /* =====================================================
+       MATERIALS
+    ===================================================== */
+
+    const bodyMaterial =
         new THREE.MeshStandardMaterial({
-            color: 0x0b272b,
-            emissive: 0x5dffe9,
-            emissiveIntensity: 0.5,
-            metalness: 0.7,
-            roughness: 0.2,
-            wireframe: false
+            color: 0x0a1519,
+            metalness: 0.9,
+            roughness: 0.22
         });
 
-    const core =
+
+    const darkMaterial =
+        new THREE.MeshStandardMaterial({
+            color: 0x03080b,
+            metalness: 0.8,
+            roughness: 0.3
+        });
+
+
+    const glassMaterial =
+        new THREE.MeshPhysicalMaterial({
+            color: 0x061a20,
+            metalness: 0.25,
+            roughness: 0.08,
+            transparent: true,
+            opacity: 0.72
+        });
+
+
+    const cyanMaterial =
+        new THREE.MeshBasicMaterial({
+            color: 0x52ffe7
+        });
+
+
+    const orangeMaterial =
+        new THREE.MeshBasicMaterial({
+            color: 0xff7138
+        });
+
+
+    /* =====================================================
+       CAR FLOOR / CHASSIS
+    ===================================================== */
+
+    const chassis =
         new THREE.Mesh(
-            coreGeometry,
-            coreMaterial
+            new THREE.BoxGeometry(
+                7.5,
+                0.34,
+                3.05
+            ),
+            darkMaterial
         );
 
-    coreGroup.add(core);
+    chassis.position.y = 0;
+
+    car.add(chassis);
 
 
-    /* Core wireframe */
+    /* chassis outline */
 
-    const coreWire =
-        new THREE.Mesh(
-            new THREE.IcosahedronGeometry(
-                1.3,
-                2
+    const chassisEdges =
+        new THREE.LineSegments(
+            new THREE.EdgesGeometry(
+                chassis.geometry
             ),
-            new THREE.MeshBasicMaterial({
-                color: 0x5dffe9,
-                wireframe: true,
+            new THREE.LineBasicMaterial({
+                color: 0x52ffe7,
                 transparent: true,
-                opacity: 0.18
+                opacity: 0.48
             })
         );
 
-    coreGroup.add(coreWire);
+    car.add(chassisEdges);
 
 
     /* =====================================================
-       ENERGY CORE RINGS
+       BATTERY PACK
     ===================================================== */
 
-    for (let i = 0; i < 3; i++) {
+    const batteryPack =
+        new THREE.Group();
 
-        const geometry =
-            new THREE.TorusGeometry(
-                1.55 + i * 0.35,
-                0.012,
-                8,
-                100
-            );
+    batteryPack.position.set(
+        -0.2,
+        0.42,
+        0
+    );
 
-        const material =
-            new THREE.MeshBasicMaterial({
-                color: 0x5dffe9,
+    car.add(batteryPack);
+
+
+    const batteryBody =
+        new THREE.Mesh(
+            new THREE.BoxGeometry(
+                4.9,
+                0.48,
+                2.15
+            ),
+            new THREE.MeshStandardMaterial({
+                color: 0x071317,
+                metalness: 0.75,
+                roughness: 0.25
+            })
+        );
+
+    batteryPack.add(batteryBody);
+
+
+    const batteryOutline =
+        new THREE.LineSegments(
+            new THREE.EdgesGeometry(
+                batteryBody.geometry
+            ),
+            new THREE.LineBasicMaterial({
+                color: 0x52ffe7,
                 transparent: true,
-                opacity: 0.45 - i * 0.1
-            });
+                opacity: 0.5
+            })
+        );
 
-        const ring =
-            new THREE.Mesh(
-                geometry,
-                material
-            );
+    batteryPack.add(batteryOutline);
 
-        ring.rotation.x =
-            Math.PI / 2;
 
-        ring.rotation.z =
-            i * 0.8;
+    /* battery modules */
 
-        coreGroup.add(ring);
+    for (let x = 0; x < 9; x++) {
 
-        ring.userData.speed =
-            0.002 + i * 0.001;
+        for (let z = 0; z < 3; z++) {
+
+            const cell =
+                new THREE.Mesh(
+                    new THREE.BoxGeometry(
+                        0.42,
+                        0.08,
+                        0.46
+                    ),
+                    new THREE.MeshBasicMaterial({
+                        color:
+                            (x + z) % 4 === 0
+                                ? 0xff7138
+                                : 0x52ffe7
+                    })
+                );
+
+            cell.position.x =
+                -1.65 + x * 0.42;
+
+            cell.position.y =
+                0.29;
+
+            cell.position.z =
+                -0.55 + z * 0.55;
+
+            batteryPack.add(cell);
+        }
     }
 
 
     /* =====================================================
-       BATTERY MODULE
+       CAR CABIN
     ===================================================== */
 
-    function createBattery(
+    const cabin =
+        new THREE.Group();
+
+    cabin.position.y = 1.05;
+
+    car.add(cabin);
+
+
+    const cabinShape =
+        new THREE.BufferGeometry();
+
+
+    const vertices = new Float32Array([
+
+        -2.7, 0, -1.35,
+         2.0, 0, -1.35,
+         2.55, 0,  1.35,
+        -2.25, 0,  1.35,
+
+        -1.65, 1.55, -0.95,
+         1.15, 1.55, -0.95,
+         1.55, 1.55,  0.95,
+        -1.25, 1.55,  0.95
+
+    ]);
+
+
+    const indices = [
+
+        0,1,5,
+        0,5,4,
+
+        1,2,6,
+        1,6,5,
+
+        2,3,7,
+        2,7,6,
+
+        3,0,4,
+        3,4,7,
+
+        4,5,6,
+        4,6,7
+
+    ];
+
+
+    cabinShape.setAttribute(
+        "position",
+        new THREE.BufferAttribute(
+            vertices,
+            3
+        )
+    );
+
+    cabinShape.setIndex(indices);
+
+    cabinShape.computeVertexNormals();
+
+
+    const cabinMesh =
+        new THREE.Mesh(
+            cabinShape,
+            glassMaterial
+        );
+
+    cabin.add(cabinMesh);
+
+
+    /* cabin outline */
+
+    const cabinEdges =
+        new THREE.LineSegments(
+            new THREE.EdgesGeometry(
+                cabinShape
+            ),
+            new THREE.LineBasicMaterial({
+                color: 0x52ffe7,
+                transparent: true,
+                opacity: 0.55
+            })
+        );
+
+    cabin.add(cabinEdges);
+
+
+    /* =====================================================
+       FRONT / REAR AERODYNAMIC STRUCTURE
+    ===================================================== */
+
+    function createBodyBlock(
         x,
         y,
         z,
-        scale = 1
+        sx,
+        sy,
+        sz
+    ) {
+
+        const mesh =
+            new THREE.Mesh(
+                new THREE.BoxGeometry(
+                    sx,
+                    sy,
+                    sz
+                ),
+                bodyMaterial
+            );
+
+        mesh.position.set(
+            x,
+            y,
+            z
+        );
+
+        car.add(mesh);
+
+        const edge =
+            new THREE.LineSegments(
+                new THREE.EdgesGeometry(
+                    mesh.geometry
+                ),
+                new THREE.LineBasicMaterial({
+                    color: 0x245d5b,
+                    transparent: true,
+                    opacity: 0.5
+                })
+            );
+
+        mesh.add(edge);
+
+        return mesh;
+    }
+
+
+    createBodyBlock(
+        3.35,
+        0.55,
+        0,
+        1.15,
+        0.65,
+        2.8
+    );
+
+
+    createBodyBlock(
+        -3.35,
+        0.55,
+        0,
+        1.15,
+        0.65,
+        2.8
+    );
+
+
+    /* =====================================================
+       WHEELS
+    ===================================================== */
+
+    function createWheel(
+        x,
+        z
+    ) {
+
+        const wheelGroup =
+            new THREE.Group();
+
+        wheelGroup.position.set(
+            x,
+            -0.15,
+            z
+        );
+
+        car.add(wheelGroup);
+
+
+        const tire =
+            new THREE.Mesh(
+                new THREE.CylinderGeometry(
+                    0.82,
+                    0.82,
+                    0.42,
+                    48
+                ),
+                new THREE.MeshStandardMaterial({
+                    color: 0x020304,
+                    metalness: 0.35,
+                    roughness: 0.8
+                })
+            );
+
+        tire.rotation.x =
+            Math.PI / 2;
+
+        wheelGroup.add(tire);
+
+
+        const rim =
+            new THREE.Mesh(
+                new THREE.CylinderGeometry(
+                    0.47,
+                    0.47,
+                    0.44,
+                    32
+                ),
+                new THREE.MeshStandardMaterial({
+                    color: 0x15272b,
+                    metalness: 0.95,
+                    roughness: 0.15
+                })
+            );
+
+        rim.rotation.x =
+            Math.PI / 2;
+
+        wheelGroup.add(rim);
+
+
+        const hub =
+            new THREE.Mesh(
+                new THREE.CylinderGeometry(
+                    0.17,
+                    0.17,
+                    0.46,
+                    24
+                ),
+                cyanMaterial
+            );
+
+        hub.rotation.x =
+            Math.PI / 2;
+
+        wheelGroup.add(hub);
+
+
+        const brake =
+            new THREE.Mesh(
+                new THREE.BoxGeometry(
+                    0.08,
+                    0.4,
+                    0.5
+                ),
+                orangeMaterial
+            );
+
+        brake.position.x = 0.25;
+
+        wheelGroup.add(brake);
+
+
+        return wheelGroup;
+    }
+
+
+    const wheelFL =
+        createWheel(
+            2.25,
+            -1.58
+        );
+
+    const wheelFR =
+        createWheel(
+            2.25,
+            1.58
+        );
+
+    const wheelRL =
+        createWheel(
+            -2.25,
+            -1.58
+        );
+
+    const wheelRR =
+        createWheel(
+            -2.25,
+            1.58
+        );
+
+
+    /* =====================================================
+       ELECTRIC MOTORS
+    ===================================================== */
+
+    function createMotor(
+        x,
+        z
     ) {
 
         const group =
@@ -324,562 +590,342 @@ if (container && THREE) {
 
         group.position.set(
             x,
-            y,
+            0.75,
             z
         );
 
-        group.scale.setScalar(scale);
-
-        world.add(group);
+        car.add(group);
 
 
-        const body =
+        const motor =
             new THREE.Mesh(
-                new THREE.BoxGeometry(
-                    2.5,
-                    1.2,
-                    1.4
+                new THREE.CylinderGeometry(
+                    0.55,
+                    0.55,
+                    1.15,
+                    32
                 ),
                 new THREE.MeshStandardMaterial({
-                    color: 0x0a171c,
-                    metalness: 0.8,
-                    roughness: 0.3
+                    color: 0x10272b,
+                    metalness: 0.9,
+                    roughness: 0.2
                 })
             );
 
-        group.add(body);
+        motor.rotation.z =
+            Math.PI / 2;
+
+        group.add(motor);
 
 
-        const edge =
-            new THREE.LineSegments(
-                new THREE.EdgesGeometry(
-                    body.geometry
-                ),
-                new THREE.LineBasicMaterial({
-                    color: 0x5dffe9,
-                    transparent: true,
-                    opacity: 0.45
-                })
-            );
-
-        group.add(edge);
-
-
-        /* Battery cells */
-
-        for (let i = 0; i < 6; i++) {
-
-            const cell =
-                new THREE.Mesh(
-                    new THREE.BoxGeometry(
-                        0.27,
-                        0.65,
-                        0.75
-                    ),
-                    new THREE.MeshBasicMaterial({
-                        color:
-                            i < 5
-                                ? 0x5dffe9
-                                : 0x153237
-                    })
-                );
-
-            cell.position.x =
-                -0.8 + i * 0.32;
-
-            cell.position.y =
-                0.02;
-
-            cell.position.z =
-                0.72;
-
-            group.add(cell);
-        }
-
-
-        /* Battery terminal */
-
-        const terminal =
+        const motorGlow =
             new THREE.Mesh(
-                new THREE.BoxGeometry(
-                    0.45,
-                    0.12,
-                    0.25
+                new THREE.CylinderGeometry(
+                    0.61,
+                    0.61,
+                    1.18,
+                    32,
+                    1,
+                    true
                 ),
                 new THREE.MeshBasicMaterial({
-                    color: 0x5dffe9
+                    color: 0x52ffe7,
+                    wireframe: true,
+                    transparent: true,
+                    opacity: 0.32
                 })
             );
 
-        terminal.position.set(
-            0,
-            0.7,
-            0
-        );
+        motorGlow.rotation.z =
+            Math.PI / 2;
 
-        group.add(terminal);
+        group.add(motorGlow);
 
 
         return group;
     }
 
 
-    const battery =
-        createBattery(
-            -4.0,
-            -0.8,
-            0.3,
-            0.9
+    const motorFront =
+        createMotor(
+            2.45,
+            0
+        );
+
+
+    const motorRear =
+        createMotor(
+            -2.45,
+            0
         );
 
 
     /* =====================================================
-       MOTOR
+       INVERTER
     ===================================================== */
-
-    const motorGroup =
-        new THREE.Group();
-
-    motorGroup.position.set(
-        3.6,
-        -0.2,
-        0.3
-    );
-
-    world.add(motorGroup);
-
-
-    const motorBody =
-        new THREE.Mesh(
-            new THREE.CylinderGeometry(
-                1.05,
-                1.05,
-                1.8,
-                48
-            ),
-            new THREE.MeshStandardMaterial({
-                color: 0x0b171b,
-                metalness: 0.9,
-                roughness: 0.25
-            })
-        );
-
-    motorBody.rotation.z =
-        Math.PI / 2;
-
-    motorGroup.add(motorBody);
-
-
-    const motorWire =
-        new THREE.Mesh(
-            new THREE.CylinderGeometry(
-                1.12,
-                1.12,
-                1.84,
-                32,
-                1,
-                true
-            ),
-            new THREE.MeshBasicMaterial({
-                color: 0x5dffe9,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.2
-            })
-        );
-
-    motorWire.rotation.z =
-        Math.PI / 2;
-
-    motorGroup.add(motorWire);
-
-
-    /* Motor rotor */
-
-    const rotor =
-        new THREE.Mesh(
-            new THREE.CylinderGeometry(
-                0.5,
-                0.5,
-                2.0,
-                32
-            ),
-            new THREE.MeshStandardMaterial({
-                color: 0x253b40,
-                metalness: 1,
-                roughness: 0.2
-            })
-        );
-
-    rotor.rotation.z =
-        Math.PI / 2;
-
-    motorGroup.add(rotor);
-
-
-    /* =====================================================
-       INVERTER / POWER ELECTRONICS
-    ===================================================== */
-
-    const inverterGroup =
-        new THREE.Group();
-
-    inverterGroup.position.set(
-        0,
-        -0.1,
-        -3
-    );
-
-    world.add(inverterGroup);
-
 
     const inverter =
         new THREE.Mesh(
             new THREE.BoxGeometry(
-                2.1,
-                1.2,
-                1.5
+                1.55,
+                0.55,
+                1.15
             ),
             new THREE.MeshStandardMaterial({
-                color: 0x091519,
-                metalness: 0.75,
-                roughness: 0.25
+                color: 0x081418,
+                metalness: 0.9,
+                roughness: 0.2
             })
         );
 
-    inverterGroup.add(inverter);
+    inverter.position.set(
+        0.8,
+        1.15,
+        0
+    );
+
+    car.add(inverter);
 
 
-    const inverterLines =
+    const inverterEdges =
         new THREE.LineSegments(
             new THREE.EdgesGeometry(
                 inverter.geometry
             ),
             new THREE.LineBasicMaterial({
-                color: 0x5dffe9,
+                color: 0xff7138,
                 transparent: true,
-                opacity: 0.4
+                opacity: 0.6
             })
         );
 
-    inverterGroup.add(inverterLines);
-
-
-    /* Power electronics chips */
-
-    for (let i = 0; i < 4; i++) {
-
-        const chip =
-            new THREE.Mesh(
-                new THREE.BoxGeometry(
-                    0.25,
-                    0.1,
-                    0.25
-                ),
-                new THREE.MeshBasicMaterial({
-                    color: 0x5dffe9
-                })
-            );
-
-        chip.position.set(
-            -0.6 + i * 0.4,
-            0.65,
-            0
-        );
-
-        inverterGroup.add(chip);
-    }
+    inverter.add(inverterEdges);
 
 
     /* =====================================================
-       SOLAR PANEL
+       POWER CABLES
     ===================================================== */
 
-    const solarGroup =
-        new THREE.Group();
-
-    solarGroup.position.set(
-        -1.8,
-        2.1,
-        0
-    );
-
-    solarGroup.rotation.z =
-        -0.2;
-
-    solarGroup.rotation.x =
-        -0.25;
-
-    world.add(solarGroup);
-
-
-    const solarBase =
-        new THREE.Mesh(
-            new THREE.BoxGeometry(
-                3.8,
-                0.12,
-                2.3
-            ),
-            new THREE.MeshStandardMaterial({
-                color: 0x081114,
-                metalness: 0.8,
-                roughness: 0.3
-            })
-        );
-
-    solarGroup.add(solarBase);
-
-
-    /* Solar cells */
-
-    for (let x = 0; x < 6; x++) {
-
-        for (let z = 0; z < 4; z++) {
-
-            const cell =
-                new THREE.Mesh(
-                    new THREE.BoxGeometry(
-                        0.53,
-                        0.025,
-                        0.45
-                    ),
-                    new THREE.MeshBasicMaterial({
-                        color: 0x102e38
-                    })
-                );
-
-            cell.position.x =
-                -1.32 + x * 0.53;
-
-            cell.position.y =
-                0.075;
-
-            cell.position.z =
-                -0.67 + z * 0.45;
-
-            solarGroup.add(cell);
-        }
-    }
-
-
-    /* =====================================================
-       ENGINEERING CONNECTIONS
-    ===================================================== */
-
-    function createConnection(
+    function cable(
         start,
-        end
+        end,
+        color
     ) {
 
-        const points = [
-            new THREE.Vector3(
-                start.x,
-                start.y,
-                start.z
-            ),
-
-            new THREE.Vector3(
-                (start.x + end.x) / 2,
-                start.y + 0.5,
-                (start.z + end.z) / 2
-            ),
-
-            new THREE.Vector3(
-                end.x,
-                end.y,
-                end.z
-            )
-        ];
-
-
         const curve =
-            new THREE.CatmullRomCurve3(
-                points
+            new THREE.LineCurve3(
+                new THREE.Vector3(
+                    start.x,
+                    start.y,
+                    start.z
+                ),
+                new THREE.Vector3(
+                    end.x,
+                    end.y,
+                    end.z
+                )
             );
 
 
         const geometry =
-            new THREE.BufferGeometry()
-                .setFromPoints(
-                    curve.getPoints(50)
-                );
+            new THREE.TubeGeometry(
+                curve,
+                20,
+                0.035,
+                8,
+                false
+            );
 
 
         const material =
-            new THREE.LineBasicMaterial({
-                color: 0x5dffe9,
-                transparent: true,
-                opacity: 0.38
+            new THREE.MeshBasicMaterial({
+                color: color
             });
 
 
-        const line =
-            new THREE.Line(
+        const mesh =
+            new THREE.Mesh(
                 geometry,
                 material
             );
 
-        world.add(line);
+        car.add(mesh);
 
-        return line;
+        return mesh;
     }
 
 
-    const connection1 =
-        createConnection(
-            new THREE.Vector3(
-                -4,
-                -0.8,
-                0.3
-            ),
-
-            new THREE.Vector3(
-                0,
-                -0.1,
-                -3
-            )
-        );
-
-
-    const connection2 =
-        createConnection(
-            new THREE.Vector3(
-                1,
-                -0.1,
-                -3
-            ),
-
-            new THREE.Vector3(
-                3.6,
-                -0.2,
-                0.3
-            )
-        );
+    cable(
+        new THREE.Vector3(
+            -1.8,
+            0.65,
+            -1
+        ),
+        new THREE.Vector3(
+            0.8,
+            1.15,
+            -0.4
+        ),
+        0x52ffe7
+    );
 
 
-    const connection3 =
-        createConnection(
-            new THREE.Vector3(
-                -1.8,
-                2.1,
-                0
-            ),
+    cable(
+        new THREE.Vector3(
+            0.8,
+            1.15,
+            0.4
+        ),
+        new THREE.Vector3(
+            2.45,
+            0.75,
+            0
+        ),
+        0xff7138
+    );
 
-            new THREE.Vector3(
-                0,
-                -0.1,
-                -3
-            )
-        );
+
+    cable(
+        new THREE.Vector3(
+            0.8,
+            1.15,
+            -0.4
+        ),
+        new THREE.Vector3(
+            -2.45,
+            0.75,
+            0
+        ),
+        0x52ffe7
+    );
 
 
     /* =====================================================
-       ENERGY PARTICLES
+       TECHNICAL ENERGY PARTICLES
     ===================================================== */
 
-    const particleGroup =
+    const particles =
         new THREE.Group();
 
-    world.add(particleGroup);
+    scene.add(particles);
 
 
-    function createEnergyParticles(
-        count,
-        color
-    ) {
+    for (let i = 0; i < 120; i++) {
 
-        for (let i = 0; i < count; i++) {
-
-            const geometry =
+        const particle =
+            new THREE.Mesh(
                 new THREE.SphereGeometry(
-                    0.035,
-                    8,
-                    8
-                );
-
-            const material =
+                    0.025,
+                    6,
+                    6
+                ),
                 new THREE.MeshBasicMaterial({
-                    color: color
-                });
-
-            const particle =
-                new THREE.Mesh(
-                    geometry,
-                    material
-                );
-
-
-            particle.position.set(
-                (Math.random() - .5) * 8,
-                (Math.random() - .5) * 3,
-                (Math.random() - .5) * 5
+                    color:
+                        i % 5 === 0
+                            ? 0xff7138
+                            : 0x52ffe7
+                })
             );
 
 
-            particle.userData.speed =
-                0.003 + Math.random() * 0.008;
+        particle.position.set(
+            (Math.random() - 0.5) * 14,
+            (Math.random() - 0.5) * 8,
+            (Math.random() - 0.5) * 12
+        );
 
-            particle.userData.offset =
-                Math.random() * Math.PI * 2;
 
-            particleGroup.add(
-                particle
-            );
-        }
+        particle.userData.speed =
+            0.001 +
+            Math.random() * 0.006;
+
+
+        particles.add(
+            particle
+        );
     }
-
-
-    createEnergyParticles(
-        80,
-        0x5dffe9
-    );
 
 
     /* =====================================================
-       BACKGROUND PARTICLES
+       FLOOR
     ===================================================== */
 
-    const starsGeometry =
-        new THREE.BufferGeometry();
-
-    const starPositions = [];
-
-
-    for (let i = 0; i < 700; i++) {
-
-        starPositions.push(
-            (Math.random() - .5) * 35,
-            (Math.random() - .5) * 22,
-            (Math.random() - .5) * 30
+    const floor =
+        new THREE.Mesh(
+            new THREE.CircleGeometry(
+                7,
+                96
+            ),
+            new THREE.MeshBasicMaterial({
+                color: 0x061014,
+                transparent: true,
+                opacity: 0.65
+            })
         );
+
+    floor.rotation.x =
+        -Math.PI / 2;
+
+    floor.position.y =
+        -1.05;
+
+    scene.add(floor);
+
+
+    /* Floor rings */
+
+    for (let i = 1; i <= 4; i++) {
+
+        const ring =
+            new THREE.Mesh(
+                new THREE.RingGeometry(
+                    i * 1.4 - 0.012,
+                    i * 1.4,
+                    96
+                ),
+                new THREE.MeshBasicMaterial({
+                    color: 0x52ffe7,
+                    transparent: true,
+                    opacity: 0.12
+                })
+            );
+
+        ring.rotation.x =
+            -Math.PI / 2;
+
+        ring.position.y =
+            -1.035;
+
+        scene.add(ring);
+
+        ring.userData.rotationSpeed =
+            i % 2 === 0
+                ? -0.002
+                : 0.002;
+
+        ring.userData.ring = true;
     }
 
 
-    starsGeometry.setAttribute(
-        "position",
-        new THREE.Float32BufferAttribute(
-            starPositions,
-            3
-        )
-    );
+    /* =====================================================
+       GRID
+    ===================================================== */
 
-
-    const starsMaterial =
-        new THREE.PointsMaterial({
-            color: 0x55777b,
-            size: 0.025,
-            transparent: true,
-            opacity: 0.65
-        });
-
-
-    const stars =
-        new THREE.Points(
-            starsGeometry,
-            starsMaterial
+    const grid =
+        new THREE.GridHelper(
+            30,
+            30,
+            0x17423f,
+            0x0a2020
         );
 
-    scene.add(stars);
+    grid.position.y =
+        -1.04;
+
+    grid.material.transparent = true;
+    grid.material.opacity = 0.18;
+
+    scene.add(grid);
 
 
     /* =====================================================
@@ -893,30 +939,28 @@ if (container && THREE) {
         );
 
     controls.enableDamping = true;
-
-    controls.dampingFactor = 0.04;
+    controls.dampingFactor = 0.045;
 
     controls.enablePan = false;
 
     controls.minDistance = 7;
-
-    controls.maxDistance = 18;
+    controls.maxDistance = 17;
 
     controls.minPolarAngle =
         Math.PI * 0.28;
 
     controls.maxPolarAngle =
-        Math.PI * 0.68;
+        Math.PI * 0.67;
 
     controls.target.set(
         0,
-        0,
+        0.4,
         0
     );
 
 
     /* =====================================================
-       MOUSE INTERACTION
+       MOUSE
     ===================================================== */
 
     let mouseX = 0;
@@ -953,117 +997,99 @@ if (container && THREE) {
             animate
         );
 
-
-        const elapsed =
+        const time =
             clock.getElapsedTime();
 
 
-        /* Core */
+        /* Car floating effect */
 
-        core.rotation.y =
-            elapsed * 0.18;
-
-        core.rotation.x =
-            Math.sin(elapsed * 0.4) * 0.15;
+        car.position.y =
+            Math.sin(time * 1.1) *
+            0.06;
 
 
-        coreWire.rotation.y =
-            -elapsed * 0.12;
+        /* Slow chassis rotation */
+
+        car.rotation.y +=
+            0.0012;
 
 
-        coreGroup.position.y =
-            Math.sin(elapsed * 1.2) * 0.08;
+        /* Motor rotation */
+
+        motorFront.rotation.x =
+            time * 2.8;
+
+        motorRear.rotation.x =
+            time * 2.8;
 
 
-        /* Rings */
+        /* Wheels */
 
-        coreGroup.children.forEach(
-            (child) => {
-
-                if (
-                    child.userData &&
-                    child.userData.speed
-                ) {
-
-                    child.rotation.z +=
-                        child.userData.speed;
-                }
+        [
+            wheelFL,
+            wheelFR,
+            wheelRL,
+            wheelRR
+        ].forEach(
+            wheel => {
+                wheel.rotation.z =
+                    time * 0.15;
             }
         );
 
 
-        /* Motor */
+        /* Technical rings */
 
-        rotor.rotation.x =
-            elapsed * 3.5;
+        scene.children.forEach(
+            object => {
 
+                if (
+                    object.userData &&
+                    object.userData.ring
+                ) {
 
-        motorWire.rotation.x =
-            -elapsed * 0.8;
-
-
-        /* Solar panel */
-
-        solarGroup.rotation.y =
-            Math.sin(elapsed * 0.4) * 0.04;
-
-
-        /* Platform */
-
-        ring1.rotation.z =
-            elapsed * 0.035;
-
-        ring2.rotation.z =
-            -elapsed * 0.055;
-
-        ring3.rotation.z =
-            elapsed * 0.08;
-
-
-        /* Stars */
-
-        stars.rotation.y =
-            elapsed * 0.008;
+                    object.rotation.z +=
+                        object.userData.rotationSpeed;
+                }
+            }
+        );
 
 
         /* Energy particles */
 
-        particleGroup.children.forEach(
-            (particle, index) => {
+        particles.children.forEach(
+            particle => {
 
                 particle.position.y +=
                     particle.userData.speed;
 
-                particle.position.x +=
-                    Math.sin(
-                        elapsed +
-                        particle.userData.offset
-                    ) * 0.0008;
-
-
                 if (
                     particle.position.y > 4
                 ) {
-
-                    particle.position.y = -3;
+                    particle.position.y = -4;
                 }
             }
         );
 
 
-        /* Mouse movement */
+        /* Gentle mouse response */
 
-        world.rotation.y +=
-            (mouseX * 0.08 -
-                world.rotation.y) * 0.01;
+        camera.position.x +=
+            (
+                8.5 +
+                mouseX * 1.4 -
+                camera.position.x
+            ) * 0.015;
 
-        world.rotation.x +=
-            (-mouseY * 0.035 -
-                world.rotation.x) * 0.01;
+        camera.position.y +=
+            (
+                4.8 -
+                mouseY * 0.7 -
+                camera.position.y
+            ) * 0.015;
 
 
         controls.update();
-
 
         renderer.render(
             scene,
@@ -1106,7 +1132,34 @@ if (container && THREE) {
 
 
 /* =========================================================
-   SMOOTH NAVIGATION
+   LOADER
+========================================================= */
+
+window.addEventListener(
+    "load",
+    () => {
+
+        const loader =
+            document.getElementById(
+                "loader"
+            );
+
+        if (!loader) return;
+
+        setTimeout(
+            () => {
+                loader.classList.add(
+                    "hidden"
+                );
+            },
+            900
+        );
+    }
+);
+
+
+/* =========================================================
+   SMOOTH SCROLL
 ========================================================= */
 
 document
@@ -1114,15 +1167,15 @@ document
         'a[href^="#"]'
     )
     .forEach(
-        (link) => {
+        link => {
 
             link.addEventListener(
                 "click",
-                function (event) {
+                event => {
 
                     const target =
                         document.querySelector(
-                            this.getAttribute(
+                            link.getAttribute(
                                 "href"
                             )
                         );
@@ -1139,61 +1192,3 @@ document
             );
         }
     );
-
-
-/* =========================================================
-   SIMPLE SCROLL REVEAL
-========================================================= */
-
-const revealElements =
-    document.querySelectorAll(
-        ".section, .project, .system-card, .timeline-item"
-    );
-
-
-const observer =
-    new IntersectionObserver(
-        (entries) => {
-
-            entries.forEach(
-                (entry) => {
-
-                    if (
-                        entry.isIntersecting
-                    ) {
-
-                        entry.target.style.opacity =
-                            "1";
-
-                        entry.target.style.transform =
-                            "translateY(0)";
-
-                        observer.unobserve(
-                            entry.target
-                        );
-                    }
-                }
-            );
-        },
-        {
-            threshold: 0.08
-        }
-    );
-
-
-revealElements.forEach(
-    (element) => {
-
-        element.style.opacity = "0";
-
-        element.style.transform =
-            "translateY(25px)";
-
-        element.style.transition =
-            "opacity .8s ease, transform .8s ease";
-
-        observer.observe(
-            element
-        );
-    }
-);
