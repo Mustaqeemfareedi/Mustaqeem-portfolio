@@ -3,650 +3,367 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Mustaqeem Fareedi — Electrical & Electronics Engineer</title>
-
-  <meta
-    name="description"
-    content="Mustaqeem Fareedi — Electrical & Electronics Engineering portfolio."
-  >
-
+  <title>Mustaqeem Fareedi | Electrical & EV Engineer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  >
-
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 
 <body>
 
-  <!-- CURSOR -->
-  <div class="cursor-dot"></div>
-  <div class="cursor-ring"></div>
-
-  <!-- BACKGROUND -->
-  <div class="noise"></div>
-  <div class="ambient ambient-one"></div>
-  <div class="ambient ambient-two"></div>
-
-  <!-- LOADER -->
   <div id="loader">
-    <div class="loader-line"></div>
-
-    <div class="loader-content">
-      <span>MF / ENGINEERING SYSTEM</span>
-      <strong>INITIALIZING</strong>
-      <div class="loader-number">00%</div>
-    </div>
+    <div class="loader-ring"></div>
+    <div class="loader-text">INITIALIZING SYSTEM</div>
+    <div class="loader-line"><span></span></div>
   </div>
 
-  <!-- NAVIGATION -->
-  <header class="nav">
+  <div class="cursor"></div>
+  <div class="cursor-dot"></div>
 
-    <a href="#hero" class="brand">
-      <span class="brand-mark">MF</span>
-      <span class="brand-text">MUSTAQEEM<br>FAREEDI</span>
-    </a>
+  <div class="noise"></div>
+  <div class="grid-background"></div>
 
-    <nav class="nav-links">
-      <a href="#about">ABOUT</a>
-      <a href="#skills">SKILLS</a>
-      <a href="#projects">PROJECTS</a>
-      <a href="#contact">CONTACT</a>
+  <header>
+    <div class="logo">MF<span>/</span>EEE</div>
+
+    <nav>
+      <a href="#home">01 HOME</a>
+      <a href="#about">02 ABOUT</a>
+      <a href="#skills">03 SKILLS</a>
+      <a href="#projects">04 PROJECTS</a>
+      <a href="#contact">05 CONTACT</a>
     </nav>
 
-    <a
-      class="nav-resume"
-      href="Mustaqeem-Fareedi-Resume.pdf"
-      target="_blank"
-    >
-      RESUME
-      <span>↗</span>
-    </a>
-
+    <div class="status">
+      <span></span> SYSTEM ONLINE
+    </div>
   </header>
 
-
   <!-- HERO -->
-  <main>
+  <main id="home">
 
-    <section id="hero" class="hero section">
-
-      <div class="hero-grid"></div>
+    <section class="hero">
 
       <div class="hero-copy">
-
-        <div class="section-index">
-          01 / INTRODUCTION
+        <div class="eyebrow">
+          <span></span> ELECTRICAL & ELECTRONICS ENGINEERING
         </div>
 
-        <div class="hero-title">
-          <span>HELLO</span>
-          <span>MUSTAQEEM</span>
-          <span>FAREEDI<span class="orange-dot">.</span></span>
+        <div class="hero-number">/ 001</div>
+
+        <h1>
+          HELLO<br>
+          <strong>MUSTAQEEM</strong><br>
+          <em>FAREEDI.</em>
+        </h1>
+
+        <p class="hero-description">
+          Electrical & Electronics Engineering student focused on
+          <b>EV technology, embedded systems, power electronics,
+          renewable energy and intelligent automation.</b>
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#projects" class="primary-btn">EXPLORE WORK <span>↗</span></a>
+          <a href="#contact" class="secondary-btn">CONTACT ME</a>
         </div>
 
-        <div class="hero-scroll">
-          <span class="scroll-line"></span>
-          SCROLL TO EXPLORE
+        <div class="hero-specs">
+          <div><small>FIELD</small><b>EEE</b></div>
+          <div><small>FOCUS</small><b>EV / IoT</b></div>
+          <div><small>STATUS</small><b>AVAILABLE</b></div>
         </div>
-
       </div>
 
+      <div class="ev-stage">
 
-      <!-- MAIN 3D EV -->
-      <div id="ev-container" class="hero-3d">
-
-        <div class="technical-label label-top">
-          EV / PLATFORM
+        <div class="stage-label top">
+          <span>EV-01</span>
+          ELECTRIC VEHICLE PLATFORM
         </div>
 
-        <div class="technical-label label-side">
-          <span>BATTERY</span>
-          <b>800V</b>
+        <div id="ev-container"></div>
+
+        <div class="ev-hud hud-one">
+          <b>BATTERY</b>
+          <span>SKATEBOARD PACK</span>
         </div>
 
-        <div class="technical-label label-motor">
-          <span>DRIVE UNIT</span>
-          <b>DUAL MOTOR</b>
+        <div class="ev-hud hud-two">
+          <b>POWERTRAIN</b>
+          <span>DUAL MOTOR</span>
         </div>
 
-        <div class="technical-label label-bottom">
-          <span>ENGINEERING STUDY</span>
-          <b>MF-01</b>
+        <div class="ev-hud hud-three">
+          <b>CONTROL</b>
+          <span>POWER ELECTRONICS</span>
         </div>
 
-      </div>
+        <div class="axis">
+          <span>X</span>
+          <span>Y</span>
+          <span>Z</span>
+        </div>
 
+        <div class="stage-bottom">
+          <span>03D / ENGINEERING VIEW</span>
+          <span>DRAG / MOVE / EXPLORE</span>
+        </div>
 
-      <div class="hero-status">
-        <span class="status-dot"></span>
-        ELECTRICAL / ELECTRONICS ENGINEERING
       </div>
 
     </section>
 
 
     <!-- ABOUT -->
-    <section id="about" class="about section">
+    <section id="about" class="section about-section">
 
-      <div class="section-header">
-
-        <span class="section-number">02</span>
-
-        <div>
-          <span class="eyebrow">PROFILE</span>
-          <h2>Engineering with<br><em>purpose.</em></h2>
-        </div>
-
+      <div class="section-heading">
+        <span>02 / ABOUT</span>
+        <h2>ENGINEER<br><i>IN PROGRESS.</i></h2>
       </div>
-
 
       <div class="about-layout">
 
-        <div class="about-copy">
+        <div class="about-visual">
+          <div id="battery-scene"></div>
 
-          <p class="large-copy">
-            I am an Electrical & Electronics Engineering student focused on
-            <strong>embedded systems, electric vehicles, power electronics,
-            renewable energy and intelligent systems.</strong>
+          <div class="visual-tag">ENERGY SYSTEM / 02</div>
+        </div>
+
+        <div class="about-text">
+
+          <div class="big-index">02</div>
+
+          <p class="large-text">
+            I am <strong>Mustaqeem Fareedi</strong>, a B.E. Electrical &
+            Electronics Engineering student at New Horizon College of
+            Engineering, Bengaluru.
           </p>
 
           <p>
-            I enjoy taking engineering concepts from simulation and
-            electronics to practical hardware — combining electrical
-            engineering with software, IoT and automation.
+            My interests sit at the intersection of electrical engineering
+            and emerging technology — especially electric vehicles,
+            renewable energy, embedded systems, automation and intelligent
+            power management.
           </p>
 
-          <div class="about-data">
-
-            <div>
-              <span>DEGREE</span>
-              <strong>B.E. — EEE</strong>
-            </div>
-
-            <div>
-              <span>COLLEGE</span>
-              <strong>NHCE, BENGALURU</strong>
-            </div>
-
-            <div>
-              <span>CGPA</span>
-              <strong>6.76</strong>
-            </div>
-
-            <div>
-              <span>FOCUS</span>
-              <strong>EV / POWER / EMBEDDED</strong>
-            </div>
-
+          <div class="about-stats">
+            <div><strong>6.76</strong><span>CGPA</span></div>
+            <div><strong>04+</strong><span>PROJECTS</span></div>
+            <div><strong>05+</strong><span>TECH AREAS</span></div>
           </div>
 
         </div>
-
-
-        <!-- 3D BATTERY -->
-        <div class="visual-card battery-card">
-
-          <div class="visual-heading">
-            <span>ENERGY SYSTEM</span>
-            <b>BATTERY PACK / 01</b>
-          </div>
-
-          <div id="battery-scene" class="mini-scene"></div>
-
-          <div class="visual-footer">
-            <span>MODULE ARRAY</span>
-            <span>800V ARCHITECTURE</span>
-          </div>
-
-        </div>
-
       </div>
-
     </section>
 
 
     <!-- SKILLS -->
-    <section id="skills" class="skills section">
+    <section id="skills" class="section skills-section">
 
-      <div class="section-header">
-
-        <span class="section-number">03</span>
-
-        <div>
-          <span class="eyebrow">CAPABILITIES</span>
-          <h2>Built around<br><em>systems.</em></h2>
-        </div>
-
+      <div class="section-heading">
+        <span>03 / SYSTEMS</span>
+        <h2>TECHNICAL<br><i>STACK.</i></h2>
       </div>
 
+      <div class="skills-grid">
 
-      <div class="skills-layout">
+        <article class="skill-card">
+          <div class="scene" id="chip-scene"></div>
+          <div class="skill-number">01</div>
+          <h3>EMBEDDED<br>SYSTEMS</h3>
+          <p>ESP32 · Arduino · Embedded C · Sensors · IoT</p>
+        </article>
 
-        <div class="skills-visual">
+        <article class="skill-card">
+          <div class="scene" id="power-scene"></div>
+          <div class="skill-number">02</div>
+          <h3>POWER<br>ENGINEERING</h3>
+          <p>EV systems · Power electronics · Energy storage · Solar</p>
+        </article>
 
-          <div id="chip-scene" class="large-mini-scene"></div>
+        <article class="skill-card">
+          <div class="scene" id="control-scene"></div>
+          <div class="skill-number">03</div>
+          <h3>AUTOMATION<br>& CONTROL</h3>
+          <p>PLC · SCADA · MATLAB · Simulink · Control systems</p>
+        </article>
 
-          <div class="chip-label">
-            <span>CORE SYSTEM</span>
-            <strong>EMBEDDED / CONTROL</strong>
-          </div>
-
-        </div>
-
-
-        <div class="skills-list">
-
-          <div class="skill-row">
-            <span>01</span>
-            <div>
-              <strong>EMBEDDED SYSTEMS</strong>
-              <small>Arduino · ESP32 · Embedded C</small>
-            </div>
-            <b>↗</b>
-          </div>
-
-          <div class="skill-row">
-            <span>02</span>
-            <div>
-              <strong>POWER & EV</strong>
-              <small>Power Electronics · EV Architecture</small>
-            </div>
-            <b>↗</b>
-          </div>
-
-          <div class="skill-row">
-            <span>03</span>
-            <div>
-              <strong>PLC / AUTOMATION</strong>
-              <small>PLC Programming · Unity Pro 5</small>
-            </div>
-            <b>↗</b>
-          </div>
-
-          <div class="skill-row">
-            <span>04</span>
-            <div>
-              <strong>MATLAB / SIMULINK</strong>
-              <small>Modelling · Simulation · Control</small>
-            </div>
-            <b>↗</b>
-          </div>
-
-          <div class="skill-row">
-            <span>05</span>
-            <div>
-              <strong>WEB DEVELOPMENT</strong>
-              <small>React.js · Node.js</small>
-            </div>
-            <b>↗</b>
-          </div>
-
-          <div class="skill-row">
-            <span>06</span>
-            <div>
-              <strong>RENEWABLE ENERGY</strong>
-              <small>Solar Systems · IoT Monitoring</small>
-            </div>
-            <b>↗</b>
-          </div>
-
-        </div>
+        <article class="skill-card">
+          <div class="scene" id="software-scene"></div>
+          <div class="skill-number">04</div>
+          <h3>SOFTWARE<br>& AI</h3>
+          <p>Python · React.js · Node.js · Machine Learning</p>
+        </article>
 
       </div>
-
     </section>
 
 
     <!-- PROJECTS -->
-    <section id="projects" class="projects section">
+    <section id="projects" class="section projects-section">
 
-      <div class="section-header project-header">
-
-        <span class="section-number">04</span>
-
-        <div>
-          <span class="eyebrow">SELECTED WORK</span>
-          <h2>Projects in<br><em>motion.</em></h2>
-        </div>
-
-        <span class="project-count">04 / 04</span>
-
+      <div class="section-heading">
+        <span>04 / PROJECTS</span>
+        <h2>BUILT TO<br><i>MOVE.</i></h2>
       </div>
 
+      <div class="projects">
 
-      <!-- PROJECT 01 -->
-      <article class="project-card project-one">
-
-        <div class="project-visual">
-          <div id="ev-project-scene" class="project-scene"></div>
-
-          <div class="project-corner">01</div>
-
-          <div class="project-tech">
-            ESP32<br>
-            MATLAB<br>
-            IoT
-          </div>
-        </div>
-
-        <div class="project-info">
-
-          <span class="project-type">
-            MAJOR PROJECT / EV ENERGY
-          </span>
-
-          <h3>
-            Solar Integrated Adaptive
-            Load Sharing System
-          </h3>
-
-          <p>
-            Intelligent load sharing for multi-vehicle EV charging using
-            IoT, energy storage and adaptive power management.
-          </p>
-
-          <div class="project-tags">
-            <span>EV</span>
-            <span>ESS</span>
-            <span>IoT</span>
-            <span>SIMULINK</span>
+        <article class="project">
+          <div class="project-visual">
+            <div id="ev-project"></div>
+            <span class="project-id">PROJECT / 01</span>
           </div>
 
-        </div>
+          <div class="project-info">
+            <span>EV · IoT · ENERGY STORAGE</span>
+            <h3>Solar Integrated Adaptive<br>Load Sharing System</h3>
+            <p>
+              Intelligent load sharing for a multi-vehicle EV charging
+              station using IoT, ESP32, solar generation and energy storage.
+            </p>
 
-      </article>
-
-
-      <!-- PROJECT 02 -->
-      <article class="project-card reverse project-two">
-
-        <div class="project-visual">
-          <div id="solar-project-scene" class="project-scene"></div>
-
-          <div class="project-corner">02</div>
-
-          <div class="project-tech">
-            ESP32<br>
-            BLYNK<br>
-            SOLAR
+            <div class="project-tech">
+              <span>ESP32</span>
+              <span>MATLAB</span>
+              <span>SIMULINK</span>
+              <span>IoT</span>
+            </div>
           </div>
-        </div>
+        </article>
 
-        <div class="project-info">
 
-          <span class="project-type">
-            RENEWABLE ENERGY
-          </span>
-
-          <h3>
-            Solar Monitoring &
-            Self-Cleaning System
-          </h3>
-
-          <p>
-            An IoT-enabled solar panel monitoring concept with environmental
-            sensing and an automated cleaning mechanism.
-          </p>
-
-          <div class="project-tags">
-            <span>SOLAR</span>
-            <span>ESP32</span>
-            <span>IOT</span>
+        <article class="project reverse">
+          <div class="project-visual">
+            <div id="solar-project"></div>
+            <span class="project-id">PROJECT / 02</span>
           </div>
 
-        </div>
+          <div class="project-info">
+            <span>RENEWABLE ENERGY · IoT</span>
+            <h3>Solar Monitoring &<br>Self-Cleaning System</h3>
+            <p>
+              Smart solar monitoring platform using ESP32 sensors and
+              cloud connectivity for improved panel performance.
+            </p>
 
-      </article>
-
-
-      <!-- PROJECT 03 -->
-      <article class="project-card project-three">
-
-        <div class="project-visual">
-          <div id="ml-project-scene" class="project-scene"></div>
-
-          <div class="project-corner">03</div>
-
-          <div class="project-tech">
-            PYTHON<br>
-            ML<br>
-            MRI
+            <div class="project-tech">
+              <span>ESP32</span>
+              <span>BLYNK</span>
+              <span>DHT11</span>
+              <span>IoT</span>
+            </div>
           </div>
-        </div>
+        </article>
 
-        <div class="project-info">
 
-          <span class="project-type">
-            MACHINE LEARNING
-          </span>
-
-          <h3>
-            Alzheimer's Disease
-            Detection
-          </h3>
-
-          <p>
-            A machine-learning project using MRI image processing and a
-            simple prediction interface for disease classification.
-          </p>
-
-          <div class="project-tags">
-            <span>PYTHON</span>
-            <span>ML</span>
-            <span>IMAGE PROCESSING</span>
+        <article class="project">
+          <div class="project-visual">
+            <div id="ml-project"></div>
+            <span class="project-id">PROJECT / 03</span>
           </div>
 
-        </div>
+          <div class="project-info">
+            <span>MACHINE LEARNING · PYTHON</span>
+            <h3>Alzheimer's Disease<br>Detection</h3>
+            <p>
+              Machine-learning based MRI image analysis system designed
+              to classify Alzheimer's disease patterns.
+            </p>
 
-      </article>
-
-
-      <!-- PROJECT 04 -->
-      <article class="project-card reverse project-four">
-
-        <div class="project-visual">
-          <div id="gps-project-scene" class="project-scene"></div>
-
-          <div class="project-corner">04</div>
-
-          <div class="project-tech">
-            ARDUINO<br>
-            GPS<br>
-            EMBEDDED
+            <div class="project-tech">
+              <span>PYTHON</span>
+              <span>ML</span>
+              <span>MRI</span>
+            </div>
           </div>
-        </div>
+        </article>
 
-        <div class="project-info">
 
-          <span class="project-type">
-            EMBEDDED SYSTEM
-          </span>
-
-          <h3>
-            GPS Tracking
-            System
-          </h3>
-
-          <p>
-            Arduino-based GPS tracking system designed to capture and display
-            real-time geographic coordinates.
-          </p>
-
-          <div class="project-tags">
-            <span>ARDUINO</span>
-            <span>GPS</span>
-            <span>EMBEDDED</span>
+        <article class="project reverse">
+          <div class="project-visual">
+            <div id="gps-project"></div>
+            <span class="project-id">PROJECT / 04</span>
           </div>
 
-        </div>
+          <div class="project-info">
+            <span>EMBEDDED · TRACKING</span>
+            <h3>GPS Tracking<br>System</h3>
+            <p>
+              Arduino-based GPS tracking system capable of acquiring
+              real-time geographic coordinates.
+            </p>
 
-      </article>
-
-    </section>
-
-
-    <!-- EDUCATION -->
-    <section class="education section">
-
-      <div class="section-header">
-
-        <span class="section-number">05</span>
-
-        <div>
-          <span class="eyebrow">BACKGROUND</span>
-          <h2>Education &<br><em>credentials.</em></h2>
-        </div>
+            <div class="project-tech">
+              <span>ARDUINO</span>
+              <span>GPS</span>
+              <span>EMBEDDED C</span>
+            </div>
+          </div>
+        </article>
 
       </div>
-
-
-      <div class="timeline">
-
-        <div class="timeline-item">
-
-          <span class="timeline-year">2023 — 2027</span>
-
-          <div>
-            <h3>B.E. Electrical & Electronics Engineering</h3>
-            <p>New Horizon College of Engineering · Bengaluru</p>
-          </div>
-
-          <strong>6.76 CGPA</strong>
-
-        </div>
-
-
-        <div class="timeline-item">
-
-          <span class="timeline-year">PUC</span>
-
-          <div>
-            <h3>Pre-University Education</h3>
-            <p>Sharanappa Meti College</p>
-          </div>
-
-          <strong>81%</strong>
-
-        </div>
-
-
-        <div class="timeline-item">
-
-          <span class="timeline-year">SSLC</span>
-
-          <div>
-            <h3>Secondary Education</h3>
-            <p>Sharana Basaveshwar School</p>
-          </div>
-
-          <strong>83.36%</strong>
-
-        </div>
-
-      </div>
-
     </section>
 
 
     <!-- CONTACT -->
-    <section id="contact" class="contact section">
+    <section id="contact" class="section contact-section">
 
-      <div class="contact-grid"></div>
+      <div class="contact-grid">
 
-      <div class="contact-content">
+        <div>
+          <span class="contact-index">05 / CONTACT</span>
 
-        <span class="eyebrow">06 / CONTACT</span>
+          <h2>
+            LET'S BUILD<br>
+            <i>WHAT'S NEXT.</i>
+          </h2>
 
-        <h2>
-          Let's build<br>
-          something <em>real.</em>
-        </h2>
+          <p>
+            Interested in EV technology, embedded systems,
+            renewable energy or engineering projects?
+          </p>
 
-        <p>
-          Open to engineering opportunities, internships,
-          collaborations and interesting technical projects.
-        </p>
-
+          <a class="email-link" href="mailto:mustaqeemfareedi@gmail.com">
+            GET IN TOUCH ↗
+          </a>
+        </div>
 
         <div class="contact-links">
 
-          <a
-            href="mailto:mustaqeemfareedi@gmail.com"
-            class="contact-link"
-          >
-            <span>EMAIL</span>
-            <strong>mustaqeemfareedi@gmail.com</strong>
-            <b>↗</b>
-          </a>
-
-
-          <a
-            href="https://www.linkedin.com/in/mustaqeem-fareedi-4a957332/"
-            target="_blank"
-            class="contact-link"
-          >
+          <a href="https://www.linkedin.com/in/mustaqeem-fareedi-4a957332/" target="_blank">
             <span>LINKEDIN</span>
-            <strong>linkedin.com/in/mustaqeem-fareedi</strong>
             <b>↗</b>
           </a>
 
-
-          <a
-            href="https://github.com/Mustaqeemfareedi"
-            target="_blank"
-            class="contact-link"
-          >
+          <a href="https://github.com/Mustaqeemfareedi" target="_blank">
             <span>GITHUB</span>
-            <strong>github.com/Mustaqeemfareedi</strong>
             <b>↗</b>
           </a>
 
-
-          <a
-            href="Mustaqeem-Fareedi-Resume.pdf"
-            target="_blank"
-            class="contact-link"
-          >
+          <a href="/Mustaqeem-Fareedi-Resume.pdf" target="_blank">
             <span>RESUME</span>
-            <strong>VIEW / DOWNLOAD CV</strong>
             <b>↗</b>
           </a>
 
         </div>
 
       </div>
+
+      <footer>
+        <span>© 2026 MUSTAQEEM FAREEDI</span>
+        <span>ELECTRICAL & ELECTRONICS ENGINEERING</span>
+        <span>BUILT WITH CURIOSITY × ENGINEERING</span>
+      </footer>
 
     </section>
 
   </main>
 
-
-  <footer>
-
-    <div>
-      MUSTAQEEM FAREEDI
-    </div>
-
-    <div>
-      ELECTRICAL & ELECTRONICS ENGINEERING
-    </div>
-
-    <div>
-      © 2026
-    </div>
-
-  </footer>
-
-
-  <!-- ONLY ONE SCRIPT TAG -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="script.js"></script>
 
 </body>
