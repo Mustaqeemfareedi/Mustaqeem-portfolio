@@ -887,3 +887,47 @@ h1 > span:not(.muted) {
     transition-duration: .01ms !important;
   }
 }
+/* CONTACT LINKS - VERTICAL */
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: 35px;
+}
+
+.contact-links a {
+  width: 220px;
+  text-align: center;
+  padding: 14px 20px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: 0.3s ease;
+  background: rgba(255,255,255,0.025);
+}
+
+.contact-links a:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(85,231,255,0.08);
+}
+
+.contact-email {
+  margin-top: 28px;
+  text-align: center;
+  font-family: "Space Mono", monospace;
+  font-size: 13px;
+}
+
+.contact-email a {
+  color: var(--cyan);
+  opacity: 0.8;
+}
+
+.contact-email a:hover {
+  opacity: 1;
+  text-shadow: 0 0 18px rgba(85,231,255,0.5);
+}
