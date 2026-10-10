@@ -1,35 +1,1594 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#070a12">
-  <meta name="description" content="Mustaqeem Fareedi — Electrical and Electronics Engineering student exploring embedded systems, IoT, EV technology and renewable energy.">
-  <title>Mustaqeem Fareedi | EEE • Embedded Systems • IoT</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Mustaqeem Fareedi | Electrical & Electronics Engineer</title>
+
+  <meta
+    name="description"
+    content="Mustaqeem Fareedi — Electrical & Electronics Engineering portfolio."
+  >
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Orbit Controls -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #05070d;
+      color: #eef7ff;
+      font-family: Arial, Helvetica, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* =========================
+       BACKGROUND
+    ========================= */
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+
+      background:
+        linear-gradient(
+          rgba(75, 255, 225, 0.025) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(75, 255, 225, 0.025) 1px,
+          transparent 1px
+        );
+
+      background-size: 55px 55px;
+
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+
+      background:
+        radial-gradient(
+          circle at 20% 20%,
+          rgba(0, 220, 255, 0.10),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 80% 70%,
+          rgba(90, 80, 255, 0.08),
+          transparent 30%
+        );
+
+      pointer-events: none;
+      z-index: -3;
+    }
+
+    /* =========================
+       NAVBAR
+    ========================= */
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 22px 6%;
+
+      background: rgba(5, 7, 13, 0.65);
+      backdrop-filter: blur(18px);
+
+      border-bottom: 1px solid rgba(110, 255, 237, 0.10);
+
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #6effed;
+    }
+
+    nav a {
+      color: #b9c8d8;
+      text-decoration: none;
+      margin-left: 28px;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #6effed;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      min-height: 100vh;
+
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+
+      align-items: center;
+
+      padding: 100px 6% 40px;
+
+      position: relative;
+    }
+
+    .hero-text {
+      z-index: 5;
+      padding-right: 20px;
+    }
+
+    .small-title {
+      color: #6effed;
+      font-size: 13px;
+      letter-spacing: 5px;
+      margin-bottom: 22px;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-size: clamp(3.4rem, 7vw, 7rem);
+      line-height: 0.92;
+      letter-spacing: -5px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 span {
+      display: block;
+
+      background: linear-gradient(
+        90deg,
+        #ffffff,
+        #6effed,
+        #8ca9ff
+      );
+
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-description {
+      max-width: 560px;
+
+      font-size: 18px;
+      line-height: 1.8;
+
+      color: #8e9eaf;
+    }
+
+    .hero-description strong {
+      color: #e8f4ff;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      margin-top: 35px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+
+      padding: 14px 24px;
+
+      border-radius: 7px;
+
+      text-decoration: none;
+
+      font-size: 14px;
+      font-weight: 700;
+
+      transition: 0.3s;
+    }
+
+    .btn-primary {
+      color: #03110f;
+      background: #6effed;
+      box-shadow: 0 0 30px rgba(110, 255, 237, 0.18);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 45px rgba(110, 255, 237, 0.35);
+    }
+
+    .btn-outline {
+      color: #dcecff;
+      border: 1px solid rgba(110, 255, 237, 0.3);
+      background: rgba(110, 255, 237, 0.025);
+    }
+
+    .btn-outline:hover {
+      border-color: #6effed;
+      color: #6effed;
+      transform: translateY(-3px);
+    }
+
+    /* =========================
+       3D EV
+    ========================= */
+
+    #ev-container {
+      width: 100%;
+      height: 680px;
+
+      position: relative;
+
+      cursor: grab;
+    }
+
+    #ev-container:active {
+      cursor: grabbing;
+    }
+
+    .ev-label {
+      position: absolute;
+
+      padding: 8px 12px;
+
+      border: 1px solid rgba(110, 255, 237, 0.25);
+      background: rgba(5, 12, 20, 0.72);
+
+      backdrop-filter: blur(10px);
+
+      border-radius: 5px;
+
+      font-size: 10px;
+      letter-spacing: 2px;
+
+      color: #6effed;
+
+      pointer-events: none;
+    }
+
+    .label-battery {
+      left: 12%;
+      top: 48%;
+    }
+
+    .label-motor {
+      right: 8%;
+      top: 38%;
+    }
+
+    .label-power {
+      right: 5%;
+      bottom: 25%;
+    }
+
+    .ev-caption {
+      position: absolute;
+      bottom: 45px;
+      right: 5%;
+
+      text-align: right;
+
+      color: #536273;
+      font-size: 11px;
+      letter-spacing: 3px;
+    }
+
+    /* =========================
+       SECTION
+    ========================= */
+
+    section {
+      padding: 120px 8%;
+      position: relative;
+    }
+
+    .section-number {
+      color: #6effed;
+      font-size: 12px;
+      letter-spacing: 4px;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      letter-spacing: -3px;
+      margin-bottom: 50px;
+    }
+
+    /* =========================
+       ABOUT
+    ========================= */
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 60px;
+    }
+
+    .about-text {
+      font-size: 21px;
+      line-height: 1.8;
+      color: #a9b8c8;
+    }
+
+    .about-text strong {
+      color: white;
+    }
+
+    .engineering-panel {
+      border: 1px solid rgba(110, 255, 237, 0.13);
+      border-radius: 15px;
+      padding: 30px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(15, 25, 38, 0.8),
+          rgba(5, 10, 18, 0.8)
+        );
+    }
+
+    .engineering-panel h3 {
+      color: #6effed;
+      margin-bottom: 25px;
+    }
+
+    .engineering-panel p {
+      color: #788898;
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+
+    /* =========================
+       SKILLS
+    ========================= */
+
+    .skills-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 18px;
+    }
+
+    .skill {
+      padding: 30px;
+
+      border-radius: 14px;
+
+      border: 1px solid rgba(145, 170, 200, 0.12);
+
+      background: rgba(11, 17, 27, 0.75);
+
+      transition: 0.35s;
+    }
+
+    .skill:hover {
+      transform: translateY(-7px);
+
+      border-color: rgba(110, 255, 237, 0.4);
+
+      box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.3),
+        0 0 25px rgba(110, 255, 237, 0.05);
+    }
+
+    .skill-number {
+      color: #6effed;
+      font-size: 11px;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+    }
+
+    .skill h3 {
+      font-size: 21px;
+      margin-bottom: 12px;
+    }
+
+    .skill p {
+      color: #748495;
+      line-height: 1.7;
+    }
+
+    /* =========================
+       PROJECTS
+    ========================= */
+
+    .projects {
+      display: grid;
+      gap: 22px;
+    }
+
+    .project {
+      display: grid;
+      grid-template-columns: 0.4fr 1fr;
+
+      border: 1px solid rgba(145, 170, 200, 0.12);
+
+      border-radius: 16px;
+
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          120deg,
+          rgba(13, 22, 35, 0.9),
+          rgba(5, 10, 18, 0.9)
+        );
+
+      transition: 0.35s;
+    }
+
+    .project:hover {
+      border-color: rgba(110, 255, 237, 0.35);
+      transform: translateX(6px);
+    }
+
+    .project-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 50px;
+      font-weight: 900;
+
+      color: rgba(110, 255, 237, 0.15);
+    }
+
+    .project-info {
+      padding: 35px;
+    }
+
+    .project-info h3 {
+      font-size: 25px;
+      margin-bottom: 14px;
+    }
+
+    .project-info p {
+      color: #7e8e9f;
+      line-height: 1.8;
+    }
+
+    .project-tags {
+      margin-top: 20px;
+
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .project-tags span {
+      padding: 7px 10px;
+
+      border: 1px solid rgba(110, 255, 237, 0.16);
+
+      border-radius: 4px;
+
+      font-size: 10px;
+
+      color: #6effed;
+    }
+
+    /* =========================
+       CONTACT
+    ========================= */
+
+    .contact {
+      text-align: center;
+    }
+
+    .contact h2 {
+      font-size: clamp(3rem, 8vw, 8rem);
+      letter-spacing: -5px;
+      margin-bottom: 25px;
+    }
+
+    .contact p {
+      color: #758596;
+      margin-bottom: 30px;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      padding: 35px 8%;
+
+      border-top: 1px solid rgba(110, 255, 237, 0.1);
+
+      color: #526273;
+
+      display: flex;
+      justify-content: space-between;
+
+      font-size: 12px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 900px) {
+
+      nav a {
+        display: none;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 130px;
+      }
+
+      .hero h1 {
+        letter-spacing: -3px;
+      }
+
+      #ev-container {
+        height: 520px;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .project {
+        grid-template-columns: 100px 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+
+      section {
+        padding: 90px 6%;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .project {
+        grid-template-columns: 1fr;
+      }
+
+      .project-number {
+        padding-top: 20px;
+        justify-content: flex-start;
+        padding-left: 25px;
+      }
+
+      .hero {
+        padding-left: 6%;
+        padding-right: 6%;
+      }
+
+      #ev-container {
+        height: 420px;
+      }
+
+      .ev-label {
+        font-size: 8px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
+  </style>
 </head>
+
 <body>
-  <canvas id="stars" aria-hidden="true"></canvas><div class="noise" aria-hidden="true"></div><div class="pointer-glow" aria-hidden="true"></div>
-  <header class="topbar"><a class="wordmark" href="#home"><span class="mark">M<span>F</span></span><span>MUSTAQEEM FAREEDI<small>ENGINEERING PORTFOLIO / 2026</small></span></a><button class="menu-toggle" aria-label="Toggle menu">☰</button><nav class="nav"><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#education">Education</a><a class="nav-contact" href="#contact">Let's connect <span>↗</span></a></nav></header>
+
+  <!-- =========================
+       NAVIGATION
+  ========================= -->
+
+  <nav>
+
+    <div class="logo">
+      MF / EEE
+    </div>
+
+    <div>
+      <a href="#about">ABOUT</a>
+      <a href="#skills">SKILLS</a>
+      <a href="#projects">PROJECTS</a>
+      <a href="#contact">CONTACT</a>
+    </div>
+
+  </nav>
+
+
+  <!-- =========================
+       HERO
+  ========================= -->
+
   <main>
-    <section class="hero section-wrap" id="home">
-      <div class="hero-copy"><div class="eyebrow"><span class="live-dot"></span> ELECTRICAL & ELECTRONICS ENGINEERING</div><p class="hero-kicker">Curiosity wired into creation.</p><h1>Building ideas<br>into <span class="gradient-text">real-world</span><br><span class="outline-text">systems.</span></h1><p class="hero-intro">I'm <strong>Mustaqeem Fareedi</strong> — an engineering student interested in embedded systems, IoT, EV technology and clean energy solutions.</p><div class="hero-actions"><a class="button button-primary" href="#projects">Explore my work <span>↘</span></a><a class="button button-quiet" href="Mustaqeem-Fareedi-Resume.pdf" target="_blank" rel="noreferrer">View résumé <span>↗</span></a></div><div class="hero-meta"><div><span class="meta-label">FOCUS</span><strong>Embedded · IoT · Energy</strong></div><div><span class="meta-label">BASED IN</span><strong>Bengaluru, India</strong></div></div></div>
-      <div class="hero-art" aria-label="Abstract animated 3D energy sphere"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div><div class="sphere"><div class="sphere-core"></div><div class="sphere-grid"></div><div class="sphere-shine"></div></div><div class="float-chip chip-top"><span class="chip-icon">⌁</span><span><small>ENERGY SYSTEMS</small><b>POWER / FLOW</b></span></div><div class="float-chip chip-bottom"><span class="chip-icon">⌘</span><span><small>CONNECTED TECH</small><b>IoT + EMBEDDED</b></span></div><div class="art-cross cross-a">+</div><div class="art-cross cross-b">✳</div><div class="art-label">FIG. 01 <span>— SYSTEMS IN MOTION</span></div></div>
-      <div class="scroll-hint"><span></span> SCROLL TO EXPLORE</div>
+
+    <section class="hero">
+
+      <div class="hero-text">
+
+        <div class="small-title">
+          HELLO WORLD
+        </div>
+
+        <h1>
+          MUSTAQEEM
+          <span>FAREEDI.</span>
+        </h1>
+
+        <p class="hero-description">
+
+          <strong>Electrical & Electronics Engineering</strong>
+          student building intelligent systems across
+          power electronics, embedded technology,
+          automation, renewable energy and electric mobility.
+
+        </p>
+
+        <div class="hero-buttons">
+
+          <a
+            class="btn btn-primary"
+            href="#projects"
+          >
+            ENTER MY WORLD →
+          </a>
+
+          <a
+            class="btn btn-outline"
+            href="Mustaqeem-Fareedi-Resume.pdf"
+            target="_blank"
+          >
+            VIEW RESUME
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <!-- 3D EV -->
+
+      <div id="ev-container">
+
+        <div class="ev-label label-battery">
+          BATTERY SYSTEM
+        </div>
+
+        <div class="ev-label label-motor">
+          ELECTRIC MOTOR
+        </div>
+
+        <div class="ev-label label-power">
+          POWER ELECTRONICS
+        </div>
+
+        <div class="ev-caption">
+          ELECTRIC MOBILITY / POWER / CONTROL
+        </div>
+
+      </div>
+
     </section>
-    <section class="ticker" aria-label="Areas of interest"><div class="ticker-track"><span>EMBEDDED SYSTEMS</span><i>✳</i><span>INTERNET OF THINGS</span><i>✳</i><span>EV TECHNOLOGY</span><i>✳</i><span>RENEWABLE ENERGY</span><i>✳</i><span>POWER ELECTRONICS</span><i>✳</i><span>EMBEDDED SYSTEMS</span><i>✳</i><span>INTERNET OF THINGS</span><i>✳</i><span>EV TECHNOLOGY</span><i>✳</i></div></section>
-    <section class="section-wrap section-pad" id="about"><div class="section-heading reveal"><span class="section-index">01 / ABOUT</span><h2>Engineer by study.<br><span class="muted">Problem-solver by nature.</span></h2></div><div class="about-grid"><div class="about-lead reveal"><span class="big-quote">“</span><p>I enjoy exploring how software and hardware come together to solve practical problems — from smarter EV charging to connected renewable-energy systems.</p></div><div class="about-detail reveal"><p>I'm pursuing a Bachelor of Engineering in Electrical and Electronics Engineering at New Horizon College of Engineering, Bengaluru. My project work spans MATLAB/Simulink, ESP32, Arduino, IoT monitoring and Python-based machine learning.</p><p>I'm keen to keep learning, collaborate with others, and build technology that is useful, efficient and thoughtfully designed.</p><div class="about-tags"><span>Curious mindset</span><span>Hands-on learning</span><span>Teamwork</span></div></div></div></section>
-    <section class="section-wrap section-pad" id="skills"><div class="section-heading reveal"><span class="section-index">02 / TOOLKIT</span><h2>Things I work <span class="gradient-text">with.</span></h2><p class="section-sub">A growing toolkit across electrical engineering, embedded development and web technologies.</p></div><div class="skills-grid"><article class="skill-card reveal"><div class="skill-num">01</div><div class="skill-symbol">⌁</div><h3>Embedded & Control</h3><p>Embedded systems · PLC programming · Arduino IDE · ESP32</p><div class="skill-line"><span style="width:82%"></span></div></article><article class="skill-card reveal"><div class="skill-num">02</div><div class="skill-symbol">⌘</div><h3>Electrical & Energy</h3><p>Renewable energy · EV technology · Power electronics</p><div class="skill-line"><span style="width:78%"></span></div></article><article class="skill-card reveal"><div class="skill-num">03</div><div class="skill-symbol">⌬</div><h3>Simulation & Logic</h3><p>MATLAB/Simulink · Unity Pro 5 · VLSI fundamentals</p><div class="skill-line"><span style="width:70%"></span></div></article><article class="skill-card reveal"><div class="skill-num">04</div><div class="skill-symbol">{ }</div><h3>Web & Programming</h3><p>React.js · Node.js · Python project experience</p><div class="skill-line"><span style="width:68%"></span></div></article></div><div class="soft-skills reveal"><span>ALSO BRINGING</span><b>Teamwork</b><i>✳</i><b>Time management</b><i>✳</i><b>Problem solving</b></div></section>
-    <section class="section-wrap section-pad" id="projects"><div class="section-heading reveal"><span class="section-index">03 / SELECTED WORK</span><h2>Projects with a <span class="gradient-text">purpose.</span></h2><p class="section-sub">A selection of academic projects and hands-on explorations.</p></div><div class="projects-list">
-      <article class="project-card project-feature reveal"><div class="project-visual ev-visual"><div class="visual-orbit"></div><div class="ev-node node-solar">PV</div><div class="ev-node node-grid">GRID</div><div class="ev-node node-ess">ESS</div><div class="ev-car">↗</div><div class="flow-line flow-one"></div><div class="flow-line flow-two"></div><div class="visual-caption">ENERGY FLOW / 001</div></div><div class="project-info"><div class="project-topline"><span>01 — MAJOR PROJECT</span><span class="status-pill"><i></i> IN DEVELOPMENT</span></div><h3>Solar-Integrated Adaptive Load Sharing for Multi-Vehicle EV Charging</h3><p>A MATLAB/Simulink-based charging concept integrating solar PV, grid supply and an energy storage system. Adaptive power sharing helps distribute charging power across multiple EVs while respecting grid limits.</p><p class="project-extra">Planned/implemented monitoring elements include ESP32, IoT communication and a dashboard for charging power, ESS state of charge, solar generation and grid parameters.</p><div class="tech-tags"><span>MATLAB / Simulink</span><span>ESP32</span><span>IoT</span><span>EV + ESS</span></div></div></article>
-      <article class="project-card reveal"><div class="project-visual solar-visual"><div class="sun"></div><div class="panel"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="clean-sweep"></div><div class="visual-caption">CLEAN ENERGY / 002</div></div><div class="project-info"><div class="project-topline"><span>02 — EMBEDDED / IoT</span><span>RENEWABLE ENERGY</span></div><h3>Self-Cleaning Solar Panel</h3><p>An ESP32-based solar-panel cleaning concept using sensors and motor control, with Arduino IDE firmware and Blynk IoT for remote monitoring and manual override.</p><div class="tech-tags"><span>ESP32</span><span>Arduino IDE</span><span>Blynk IoT</span></div></div></article>
-      <article class="project-card reveal"><div class="project-visual ml-visual"><div class="scan-ring"></div><div class="brain">✳</div><div class="scan-text">PATTERN ANALYSIS<br><span>ML / IMAGE DATA</span></div><div class="visual-caption">MACHINE LEARNING / 003</div></div><div class="project-info"><div class="project-topline"><span>03 — MACHINE LEARNING</span><span>PYTHON</span></div><h3>Alzheimer's Disease Detection</h3><p>A Python-based machine-learning project involving data preprocessing and a simple prediction interface to explore patterns associated with different stages of Alzheimer's disease.</p><div class="tech-tags"><span>Python</span><span>Machine Learning</span><span>Data Preprocessing</span></div></div></article>
-      <article class="project-card reveal"><div class="project-visual gps-visual"><div class="map-grid"></div><div class="map-route"></div><div class="map-pin">●</div><div class="gps-coord">GPS SIGNAL<br><b>LOCATION TRACKING</b></div><div class="visual-caption">CONNECTED DEVICES / 004</div></div><div class="project-info"><div class="project-topline"><span>04 — MICROCONTROLLER</span><span>TRACKING</span></div><h3>GPS Tracking System Using Arduino</h3><p>A basic real-time tracking setup integrating Arduino with a GPS module to retrieve and display location coordinates.</p><div class="tech-tags"><span>Arduino</span><span>GPS Module</span><span>Embedded Systems</span></div></div></article>
-    </div></section>
-    <section class="section-wrap section-pad education-section" id="education"><div class="section-heading reveal"><span class="section-index">04 / EDUCATION</span><h2>Learning is <span class="gradient-text">ongoing.</span></h2></div><div class="timeline"><article class="timeline-item reveal"><span class="timeline-dot"></span><div class="timeline-date">ENGINEERING</div><div><h3>B.E. — Electrical & Electronics Engineering</h3><p>New Horizon College of Engineering · Bengaluru, India</p><span class="timeline-note">CGPA: 6.76 · Current programme</span></div></article><article class="timeline-item reveal"><span class="timeline-dot"></span><div class="timeline-date">PRE-UNIVERSITY</div><div><h3>PUC Education</h3><p>Sharanappa Meti College · Karnataka, India</p><span class="timeline-note">81%</span></div></article><article class="timeline-item reveal"><span class="timeline-dot"></span><div class="timeline-date">SECONDARY</div><div><h3>Secondary Education</h3><p>Sharana Basaveshwar School (SBR) · Surapur, Karnataka</p><span class="timeline-note">83.36%</span></div></article></div><div class="cert-grid reveal"><div class="cert-icon">✳</div><div><span class="section-index">CERTIFICATION</span><h3>NPTEL — Internet of Things</h3><p>Certified course covering IoT concepts and architecture.</p></div><div class="cert-icon">↗</div><div><span class="section-index">WORKSHOP</span><h3>Problem Solving and Ideation</h3><p>Workshop participation associated with artificial intelligence and machine learning.</p></div></div></section>
-    <section class="contact-section" id="contact"><div class="contact-glow"></div><div class="section-wrap contact-inner"><span class="section-index reveal">05 / CONTACT</span><h2 class="reveal">Have a good idea?<br><span class="gradient-text">Let's connect.</span></h2><p class="contact-copy reveal">Open to learning opportunities, technical conversations and collaborations around engineering, embedded systems, IoT and energy technology.</p><a class="email-link reveal" href="mailto:mustaqeemfareedi5@gmail.com">mustaqeemfareedi5@gmail.com <span>↗</span></a><div class="contact-actions reveal"><a class="button button-primary" href="mailto:mustaqeemfareedi5@gmail.com">Send me an email ↗</a><a class="button button-quiet" href="https://www.linkedin.com/in/mustaqeem-fareedi-4a957332b/" target="_blank" rel="noreferrer">Connect on LinkedIn ↗</a><a class="button button-quiet" href="Mustaqeem-Fareedi-Resume.pdf" target="_blank" rel="noreferrer">Résumé PDF ↗</a></div></div></section>
+
+
+    <!-- =========================
+         ABOUT
+    ========================= -->
+
+    <section id="about">
+
+      <div class="section-number">
+        01 / ABOUT
+      </div>
+
+      <h2 class="section-title">
+        Electrical thinking.<br>
+        Real-world systems.
+      </h2>
+
+      <div class="about-grid">
+
+        <div class="about-text">
+
+          I'm <strong>Mustaqeem Fareedi</strong>,
+          an Electrical & Electronics Engineering
+          student interested in creating practical
+          technology that connects electrical systems,
+          electronics and software.
+
+          <br><br>
+
+          My interests span
+          <strong>embedded systems, EV technology,
+          renewable energy, power electronics,
+          automation and intelligent systems.</strong>
+
+        </div>
+
+        <div class="engineering-panel">
+
+          <h3>ENGINEERING FOCUS</h3>
+
+          <p>⚡ Electrical Systems</p>
+          <p>🔋 Energy Storage & EV</p>
+          <p>◈ Power Electronics</p>
+          <p>◉ Embedded Systems</p>
+          <p>⚙ PLC & Automation</p>
+          <p>⌁ IoT & Intelligent Systems</p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         SKILLS
+    ========================= -->
+
+    <section id="skills">
+
+      <div class="section-number">
+        02 / SYSTEMS
+      </div>
+
+      <h2 class="section-title">
+        What I work with.
+      </h2>
+
+      <div class="skills-grid">
+
+        <div class="skill">
+          <div class="skill-number">01</div>
+          <h3>Embedded Systems</h3>
+          <p>
+            ESP32, Arduino, Embedded C,
+            sensors and IoT-based systems.
+          </p>
+        </div>
+
+        <div class="skill">
+          <div class="skill-number">02</div>
+          <h3>EV Technology</h3>
+          <p>
+            EV charging, energy storage,
+            adaptive load sharing and power management.
+          </p>
+        </div>
+
+        <div class="skill">
+          <div class="skill-number">03</div>
+          <h3>Power & Energy</h3>
+          <p>
+            Renewable energy, solar PV,
+            batteries and power electronics.
+          </p>
+        </div>
+
+        <div class="skill">
+          <div class="skill-number">04</div>
+          <h3>Automation</h3>
+          <p>
+            PLC programming, industrial control
+            and automation concepts.
+          </p>
+        </div>
+
+        <div class="skill">
+          <div class="skill-number">05</div>
+          <h3>MATLAB / Simulink</h3>
+          <p>
+            System modelling, simulation,
+            battery and energy management concepts.
+          </p>
+        </div>
+
+        <div class="skill">
+          <div class="skill-number">06</div>
+          <h3>VLSI & Electronics</h3>
+          <p>
+            Digital electronics, FPGA concepts,
+            interfacing and electronic systems.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         PROJECTS
+    ========================= -->
+
+    <section id="projects">
+
+      <div class="section-number">
+        03 / PROJECTS
+      </div>
+
+      <h2 class="section-title">
+        Systems I've built.
+      </h2>
+
+      <div class="projects">
+
+        <div class="project">
+
+          <div class="project-number">
+            01
+          </div>
+
+          <div class="project-info">
+
+            <h3>
+              Solar-Integrated Adaptive Load Sharing
+              for Multi-Vehicle EV Charging
+            </h3>
+
+            <p>
+              A smart EV charging concept integrating
+              solar PV, energy storage, grid power and
+              adaptive power sharing for multiple vehicles.
+            </p>
+
+            <div class="project-tags">
+              <span>ESP32</span>
+              <span>MATLAB</span>
+              <span>SIMULINK</span>
+              <span>IoT</span>
+              <span>ESS</span>
+              <span>EV</span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="project">
+
+          <div class="project-number">
+            02
+          </div>
+
+          <div class="project-info">
+
+            <h3>
+              Self-Cleaning Solar Panel
+            </h3>
+
+            <p>
+              An automated solar panel cleaning system
+              using ESP32, sensors, motor control and
+              IoT-based monitoring.
+            </p>
+
+            <div class="project-tags">
+              <span>ESP32</span>
+              <span>ARDUINO</span>
+              <span>BLYNK</span>
+              <span>IoT</span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="project">
+
+          <div class="project-number">
+            03
+          </div>
+
+          <div class="project-info">
+
+            <h3>
+              Alzheimer's Disease Detection
+              Using Machine Learning
+            </h3>
+
+            <p>
+              A machine-learning based project using
+              image preprocessing and a prediction
+              interface for Alzheimer's disease patterns.
+            </p>
+
+            <div class="project-tags">
+              <span>PYTHON</span>
+              <span>ML</span>
+              <span>IMAGE PROCESSING</span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="project">
+
+          <div class="project-number">
+            04
+          </div>
+
+          <div class="project-info">
+
+            <h3>
+              GPS Tracking System
+            </h3>
+
+            <p>
+              Arduino-based GPS tracking system
+              designed to obtain and display
+              real-time location coordinates.
+            </p>
+
+            <div class="project-tags">
+              <span>ARDUINO</span>
+              <span>GPS</span>
+              <span>EMBEDDED</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         CONTACT
+    ========================= -->
+
+    <section id="contact" class="contact">
+
+      <div class="section-number">
+        04 / CONTACT
+      </div>
+
+      <h2>
+        LET'S BUILD.
+      </h2>
+
+      <p>
+        Have an idea, project or opportunity?
+        Let's connect.
+      </p>
+
+      <div class="contact-links">
+
+        <a
+          class="btn btn-primary"
+          href="mailto:mustaqeemfareedi5@gmail.com"
+        >
+          EMAIL ME
+        </a>
+
+        <a
+          class="btn btn-outline"
+          href="https://www.linkedin.com/in/mustaqeem-fareedi-4a957332b/"
+          target="_blank"
+        >
+          LINKEDIN
+        </a>
+
+        <a
+          class="btn btn-outline"
+          href="https://github.com/Mustaqeemfareedi"
+          target="_blank"
+        >
+          GITHUB
+        </a>
+
+      </div>
+
+    </section>
+
   </main>
-  <footer class="footer"><a class="footer-name" href="#home">MF<span> / </span>MUSTAQEEM FAREEDI</a><span>DESIGNED TO KEEP MOVING FORWARD.</span><a href="#home">BACK TO TOP ↑</a><small>© <span id="year"></span> MUSTAQEEM FAREEDI</small></footer>
-  <script src="script.js"></script>
-</body></html>
+
+
+  <footer>
+
+    <span>
+      © 2026 MUSTAQEEM FAREEDI
+    </span>
+
+    <span>
+      ELECTRICAL & ELECTRONICS ENGINEERING
+    </span>
+
+  </footer>
+
+
+  <!-- =========================
+       3D ELECTRIC VEHICLE
+  ========================= -->
+
+  <script>
+
+    const container =
+      document.getElementById("ev-container");
+
+    const scene =
+      new THREE.Scene();
+
+    scene.background =
+      new THREE.Color(0x05070d);
+
+
+    /* CAMERA */
+
+    const camera =
+      new THREE.PerspectiveCamera(
+        45,
+        container.clientWidth /
+        container.clientHeight,
+        0.1,
+        1000
+      );
+
+    camera.position.set(
+      5.8,
+      3.1,
+      7.2
+    );
+
+
+    /* RENDERER */
+
+    const renderer =
+      new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true
+      });
+
+    renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio, 2)
+    );
+
+    renderer.setSize(
+      container.clientWidth,
+      container.clientHeight
+    );
+
+    renderer.shadowMap.enabled = true;
+
+    container.appendChild(renderer.domElement);
+
+
+    /* CONTROLS */
+
+    const controls =
+      new THREE.OrbitControls(
+        camera,
+        renderer.domElement
+      );
+
+    controls.enableDamping = true;
+
+    controls.enablePan = false;
+
+    controls.minDistance = 5;
+    controls.maxDistance = 11;
+
+    controls.target.set(
+      0,
+      0.5,
+      0
+    );
+
+
+    /* LIGHTS */
+
+    const ambient =
+      new THREE.AmbientLight(
+        0x9fdfff,
+        1.8
+      );
+
+    scene.add(ambient);
+
+
+    const cyanLight =
+      new THREE.PointLight(
+        0x42ffe4,
+        7,
+        15
+      );
+
+    cyanLight.position.set(
+      4,
+      4,
+      4
+    );
+
+    scene.add(cyanLight);
+
+
+    const blueLight =
+      new THREE.PointLight(
+        0x508cff,
+        6,
+        15
+      );
+
+    blueLight.position.set(
+      -5,
+      2,
+      -3
+    );
+
+    scene.add(blueLight);
+
+
+    /* =========================
+       EV GROUP
+    ========================= */
+
+    const car =
+      new THREE.Group();
+
+    scene.add(car);
+
+
+    /* MATERIALS */
+
+    const bodyMaterial =
+      new THREE.MeshStandardMaterial({
+        color: 0x101925,
+        metalness: 0.9,
+        roughness: 0.22
+      });
+
+
+    const glassMaterial =
+      new THREE.MeshStandardMaterial({
+        color: 0x07151e,
+        metalness: 0.6,
+        roughness: 0.08,
+        transparent: true,
+        opacity: 0.82
+      });
+
+
+    const cyanMaterial =
+      new THREE.MeshStandardMaterial({
+        color: 0x27ffe1,
+        emissive: 0x0a8f80,
+        emissiveIntensity: 2.5,
+        metalness: 0.5,
+        roughness: 0.2
+      });
+
+
+    const batteryMaterial =
+      new THREE.MeshStandardMaterial({
+        color: 0x182b39,
+        emissive: 0x083a40,
+        emissiveIntensity: 1.2,
+        metalness: 0.5,
+        roughness: 0.35
+      });
+
+
+    /* BODY */
+
+    const bodyGeometry =
+      new THREE.BoxGeometry(
+        5.5,
+        0.75,
+        2.25
+      );
+
+    const body =
+      new THREE.Mesh(
+        bodyGeometry,
+        bodyMaterial
+      );
+
+    body.position.y = 0.9;
+
+    body.castShadow = true;
+
+    car.add(body);
+
+
+    /* ROOF */
+
+    const roofGeometry =
+      new THREE.BoxGeometry(
+        3.1,
+        0.65,
+        1.85
+      );
+
+    const roof =
+      new THREE.Mesh(
+        roofGeometry,
+        glassMaterial
+      );
+
+    roof.position.set(
+      0.15,
+      1.48,
+      0
+    );
+
+    roof.rotation.z =
+      -0.04;
+
+    car.add(roof);
+
+
+    /* FRONT */
+
+    const frontGeometry =
+      new THREE.BoxGeometry(
+        0.3,
+        0.5,
+        1.9
+      );
+
+    const front =
+      new THREE.Mesh(
+        frontGeometry,
+        cyanMaterial
+      );
+
+    front.position.set(
+      2.72,
+      0.92,
+      0
+    );
+
+    car.add(front);
+
+
+    /* BATTERY PACK */
+
+    const batteryGeometry =
+      new THREE.BoxGeometry(
+        3.4,
+        0.22,
+        1.35
+      );
+
+    const battery =
+      new THREE.Mesh(
+        batteryGeometry,
+        batteryMaterial
+      );
+
+    battery.position.set(
+      -0.1,
+      0.48,
+      0
+    );
+
+    car.add(battery);
+
+
+    /* BATTERY MODULE LINES */
+
+    for (
+      let i = -1.4;
+      i <= 1.4;
+      i += 0.7
+    ) {
+
+      const module =
+        new THREE.Mesh(
+          new THREE.BoxGeometry(
+            0.45,
+            0.28,
+            1.15
+          ),
+          cyanMaterial
+        );
+
+      module.position.set(
+        i,
+        0.64,
+        0
+      );
+
+      car.add(module);
+    }
+
+
+    /* MOTORS */
+
+    function createMotor(x) {
+
+      const motor =
+        new THREE.Mesh(
+          new THREE.CylinderGeometry(
+            0.45,
+            0.45,
+            0.55,
+            32
+          ),
+          cyanMaterial
+        );
+
+      motor.rotation.z =
+        Math.PI / 2;
+
+      motor.position.set(
+        x,
+        0.55,
+        0
+      );
+
+      car.add(motor);
+
+    }
+
+    createMotor(2.1);
+    createMotor(-2.1);
+
+
+    /* WHEELS */
+
+    function createWheel(x, z) {
+
+      const wheel =
+        new THREE.Mesh(
+          new THREE.CylinderGeometry(
+            0.68,
+            0.68,
+            0.35,
+            32
+          ),
+          new THREE.MeshStandardMaterial({
+            color: 0x050608,
+            metalness: 0.7,
+            roughness: 0.35
+          })
+        );
+
+      wheel.rotation.x =
+        Math.PI / 2;
+
+      wheel.position.set(
+        x,
+        0.58,
+        z
+      );
+
+      car.add(wheel);
+
+
+      const rim =
+        new THREE.Mesh(
+          new THREE.CylinderGeometry(
+            0.38,
+            0.38,
+            0.37,
+            24
+          ),
+          cyanMaterial
+        );
+
+      rim.rotation.x =
+        Math.PI / 2;
+
+      rim.position.set(
+        x,
+        0.58,
+        z
+      );
+
+      car.add(rim);
+
+    }
+
+
+    createWheel(1.8, 1.15);
+    createWheel(-1.8, 1.15);
+
+    createWheel(1.8, -1.15);
+    createWheel(-1.8, -1.15);
+
+
+    /* ENERGY RINGS */
+
+    const ringMaterial =
+      new THREE.MeshBasicMaterial({
+        color: 0x6effed,
+        transparent: true,
+        opacity: 0.28
+      });
+
+
+    for (
+      let i = 0;
+      i < 3;
+      i++
+    ) {
+
+      const ring =
+        new THREE.Mesh(
+          new THREE.TorusGeometry(
+            3.3 + i * 0.35,
+            0.008,
+            8,
+            100
+          ),
+          ringMaterial
+        );
+
+      ring.rotation.x =
+        Math.PI / 2;
+
+      ring.position.y =
+        0.05 + i * 0.02;
+
+      car.add(ring);
+    }
+
+
+    /* FLOATING ENERGY PARTICLES */
+
+    const particleGeometry =
+      new THREE.BufferGeometry();
+
+    const particleCount = 450;
+
+    const positions =
+      new Float32Array(
+        particleCount * 3
+      );
+
+    for (
+      let i = 0;
+      i < particleCount;
+      i++
+    ) {
+
+      positions[i * 3] =
+        (Math.random() - 0.5) * 13;
+
+      positions[i * 3 + 1] =
+        (Math.random() - 0.5) * 6;
+
+      positions[i * 3 + 2] =
+        (Math.random() - 0.5) * 10;
+
+    }
+
+    particleGeometry.setAttribute(
+      "position",
+      new THREE.BufferAttribute(
+        positions,
+        3
+      )
+    );
+
+
+    const particleMaterial =
+      new THREE.PointsMaterial({
+        color: 0x6effed,
+        size: 0.025,
+        transparent: true,
+        opacity: 0.75
+      });
+
+
+    const particles =
+      new THREE.Points(
+        particleGeometry,
+        particleMaterial
+      );
+
+    scene.add(particles);
+
+
+    /* =========================
+       ANIMATION
+    ========================= */
+
+    function animate() {
+
+      requestAnimationFrame(
+        animate
+      );
+
+      car.rotation.y += 0.0025;
+
+      particles.rotation.y += 0.00025;
+
+      cyanLight.position.x =
+        Math.sin(
+          Date.now() * 0.001
+        ) * 4;
+
+      controls.update();
+
+      renderer.render(
+        scene,
+        camera
+      );
+
+    }
+
+    animate();
+
+
+    /* =========================
+       RESIZE
+    ========================= */
+
+    window.addEventListener(
+      "resize",
+      () => {
+
+        camera.aspect =
+          container.clientWidth /
+          container.clientHeight;
+
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(
+          container.clientWidth,
+          container.clientHeight
+        );
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
