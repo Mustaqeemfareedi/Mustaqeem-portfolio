@@ -1184,3 +1184,7 @@ footer {
         text-align: center;
     }
 }
+/* FIX — REMOVE DUPLICATE TOP HUD */
+.hud-top {
+    display: none !important;
+}
